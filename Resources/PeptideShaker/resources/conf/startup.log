@@ -1,0 +1,16 @@
+Memory settings read from the user preferences: 1536
+args: 
+original java.home: C:\Program Files (x86)\Java\jre1.8.0_251\bin\
+temp java.home: C:\Program Files\Java\jre1.8.0_251\bin\
+new java.home: C:\Program Files (x86)\Java\jre1.8.0_251\bin\
+
+Command line: 
+"C:\Program Files (x86)\Java\jre1.8.0_251\bin\java" -splash:resources\conf\peptide-shaker-splash.png -Xms128M -Xmx1536M -cp "C:\Users\avish\Documents\MSCTR\Proteogenomics\DeNoProP\Resources\PeptideShaker\PeptideShaker-2.0.25.jar" eu.isas.peptideshaker.gui.PeptideShakerGUI 
+Process exitValue: 1
+original java.home: C:\Program Files (x86)\Java\jre1.8.0_251\bin\
+temp java.home: C:\Program Files\Java\jre1.8.0_251\bin\
+new java.home: C:\Program Files (x86)\Java\jre1.8.0_251\bin\
+
+Command line: 
+"C:\Program Files (x86)\Java\jre1.8.0_251\bin\java" -splash:resources\conf\peptide-shaker-splash.png -Xms128M -Xmx1024M -cp "C:\Users\avish\Documents\MSCTR\Proteogenomics\DeNoProP\Resources\PeptideShaker\PeptideShaker-2.0.25.jar" eu.isas.peptideshaker.gui.PeptideShakerGUI 
+Process exitValue: 0

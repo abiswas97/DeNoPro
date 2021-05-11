@@ -1,0 +1,30 @@
+Memory settings read from the user preferences: 4096
+args: 
+original java.home: C:\Program Files (x86)\Java\jre1.8.0_251\bin\
+temp java.home: C:\Program Files\Java\jre1.8.0_251\bin\
+new java.home: C:\Program Files (x86)\Java\jre1.8.0_251\bin\
+
+Command line: 
+"C:\Program Files (x86)\Java\jre1.8.0_251\bin\java" -splash:resources\conf\searchgui-splash.png -Xms128M -Xmx4096M -cp "C:\Users\avish\Documents\MSCTR\Proteogenomics\DeNoProP\Resources\SearchGUI\SearchGUI-4.0.32.jar" eu.isas.searchgui.gui.SearchGUI 
+Process exitValue: 1
+original java.home: C:\Program Files (x86)\Java\jre1.8.0_251\bin\
+temp java.home: C:\Program Files\Java\jre1.8.0_251\bin\
+new java.home: C:\Program Files (x86)\Java\jre1.8.0_251\bin\
+
+Command line: 
+"C:\Program Files (x86)\Java\jre1.8.0_251\bin\java" -splash:resources\conf\searchgui-splash.png -Xms128M -Xmx3072M -cp "C:\Users\avish\Documents\MSCTR\Proteogenomics\DeNoProP\Resources\SearchGUI\SearchGUI-4.0.32.jar" eu.isas.searchgui.gui.SearchGUI 
+Process exitValue: 1
+original java.home: C:\Program Files (x86)\Java\jre1.8.0_251\bin\
+temp java.home: C:\Program Files\Java\jre1.8.0_251\bin\
+new java.home: C:\Program Files (x86)\Java\jre1.8.0_251\bin\
+
+Command line: 
+"C:\Program Files (x86)\Java\jre1.8.0_251\bin\java" -splash:resources\conf\searchgui-splash.png -Xms128M -Xmx2048M -cp "C:\Users\avish\Documents\MSCTR\Proteogenomics\DeNoProP\Resources\SearchGUI\SearchGUI-4.0.32.jar" eu.isas.searchgui.gui.SearchGUI 
+Process exitValue: 1
+original java.home: C:\Program Files (x86)\Java\jre1.8.0_251\bin\
+temp java.home: C:\Program Files\Java\jre1.8.0_251\bin\
+new java.home: C:\Program Files (x86)\Java\jre1.8.0_251\bin\
+
+Command line: 
+"C:\Program Files (x86)\Java\jre1.8.0_251\bin\java" -splash:resources\conf\searchgui-splash.png -Xms128M -Xmx1536M -cp "C:\Users\avish\Documents\MSCTR\Proteogenomics\DeNoProP\Resources\SearchGUI\SearchGUI-4.0.32.jar" eu.isas.searchgui.gui.SearchGUI 
+Process exitValue: 0
