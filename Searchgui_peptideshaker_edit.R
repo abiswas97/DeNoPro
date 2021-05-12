@@ -1,8 +1,9 @@
+#!/usr/bin/Rscript
+args <- commandArgs(TRUE)
+
 library("PGA")
 
-config <- read.csv("config.csv")
-Spectra_files_directory = config[4,2]
-
+Spectra_files_directory = args[1]
 trinity_output <- list.files(pattern="*Trinity.fasta$")
 setwd(Spectra_files_directory)
 #system(find ./ -name '*.mzML' -exec msconvert --filter "peakPicking true 2-" --mgf {} \;)

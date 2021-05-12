@@ -48,17 +48,28 @@ class denoproTask(object):
                     " are stored in the config file.")
         return fastq_path
     
+    def get_spectra(self):
+        spectra_path = None
+        if self.config.has_option('directory_locations', 'spectra_files'):
+            path = self.config.get('directory_locations', 'spectra_files')
+            if os.path.exists(path):
+                spectra_path = path
+            else:
+                print("Please specify the path to where spectra files"
+                    " are stored in the config file.")
+        return spectra_path
     
 class Assemble(denoproTask):
     def __init__(self, **kwargs):
-        parser = argparse.ArgumentParser(
-            description="Denovo assembly of RNAseq reads",
-            parents=[self.base_parser],
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter)
         if not kwargs:
+            parser = argparse.ArgumentParser(
+                description="Denovo assembly of RNAseq reads",
+                parents=[self.base_parser],
+                formatter_class=argparse.ArgumentDefaultsHelpFormatter)
             args = parser.parse_args(sys.argv[2:])
 
             config_file = args.config_file
+        
         else:
             config_file = kwargs.get('config_file')
         
@@ -67,3 +78,25 @@ class Assemble(denoproTask):
     def run(self):
         path = denoproTask.get_fastq(self)
         trinity.nonEmpty(path)
+
+class SearchGUI_Peptideshaker(denoproTask):
+    def __init__(self, **kwargs):
+        if not kwargs:
+            parser = argparse.ArgumentParser(
+                description="Custom peptide database from assembled transcripts",
+                parents=[self.base_parser],
+                formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+            parser.add_argument('spectra', metavar="<SPECTRA>",
+                                help="Directory containing MS/MS spectra files")
+            args = parser.parse_args(sys.argv[2:])
+
+            config_file = args.config_file
+        
+        else:
+            config_file = kwargs.get('config_file')
+        
+        self.config = self.read_config(config_file)
+    
+    def run(self):
+        path = denoproTask.get_spectra(self)
+        os.system(f"Rscript Searchgui_peptideshaker_edit.R {path}")
