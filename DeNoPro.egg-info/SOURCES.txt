@@ -7,3 +7,5 @@ DeNoPro.egg-info/top_level.txt
 lib/__init__.py
 lib/__main__.py
 lib/launcher.py
+lib/tasks.py
+lib/trinity.py
