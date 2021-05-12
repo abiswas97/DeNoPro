@@ -32,7 +32,7 @@ for (k in 1:length(conf_peptide_psm)) {
 	r1<-read.csv(conf_peptide_psm[k])
 	print(conf_peptide_psm[k])
 	r2<-r1[!duplicated(r1$Sequence),]
-	list <- strsplit(as.character(f1[k]), split="/")
+	list <- strsplit(as.character(conf_peptide_psm[k]), split="/")
 	df1 <- ldply(list)
 	r3<-r2$Sequence
 	r3<-as.data.frame(r3)
