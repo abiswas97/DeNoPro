@@ -15,5 +15,8 @@ Paired or singled end reads are first assembled using Trinity and six-frame tran
 PeeptideShaker
 
 ## Installation
+To install DeNoPro as a python module, open a terminal in the directory containing setup.py, and run
+  python setup.py install
+
 
 ## Usage
