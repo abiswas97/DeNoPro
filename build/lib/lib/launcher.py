@@ -1,20 +1,36 @@
 import argparse
 import sys
 
+from lib.tasks import Assemble
+
 def launch():
     parser = argparse.ArgumentParser(
         description = 'DeNoPro: Denovo Proteogenomics Pipeline to identify clinically relevant novel variants from RNAseq and Proteomics data',
-        usage = """ denopro <mode> [<args>]
+        usage = """ 
+        
+             # # # # # # # # # # # # # # # # # # # # # # # # # # 
+            #    __            _              ___                #
+            #   |  \          | \    |       |   \               #
+            #   |   \     _   |  |   |   _   |    \   __    _    #
+            #   |    \   / \  |  \   |  / \  |    /  /  \  / \   #
+            #   |     | | _/  |   |  | |   | |___/  |     |   |  #
+            #   |    /   \__/ |   \  |  \_/  |      |      \_/   #
+            #   |   /         |    | |       |                   #
+            #   |__/          |    \_|       |                   #
+            #                                                    #
+             # # # # # # # # # # # # # # # # # # # # # # # # # # 
+        
+                        denopro <mode> [<args>]
 
         Modes are:
 
-        - assemble:  denovo assembly of transcript sequences using Trinity
-        - customdb:  produces custom peptide database from assembled transcripts 
-                     which are mapped against proteomics data
-        - findnovel: maps potential novel peptides from customdb to a reference 
-                     tracriptome, outputting a list of confident novel peptides
-        - survival: 
-        - novelorf: 
+            - assemble:  denovo assembly of transcript sequences using Trinity
+            - customdb:  produces custom peptide database from assembled transcripts 
+                         which are mapped against proteomics data
+            - findnovel: maps potential novel peptides from customdb to a reference 
+                         tracriptome, outputting a list of confident novel peptides
+            - survival: 
+            - novelorf: 
 
         denopro <mode> -h for specific help
         """)
@@ -24,16 +40,17 @@ def launch():
 
     tasks = {
         'assemble': Assemble,
-        'customdb': SearchGUI_Peptideshaker,
-        'findnovel': Novel_peptide_identification,
-        'survival': Survival_analysis,
-        'novelorf': Potential_novel_orf
+#        'customdb': SearchGUI_Peptideshaker,
+#        'findnovel': Novel_peptide_identification,
+#        'survival': Survival_analysis,
+#        'novelorf': Potential_novel_orf
     }
 
-    if args.node not in tasks:
+    if args.mode not in tasks:
         print("Unsupported mode")
         parser.print_help()
         exit(1)
     
     Task = tasks[args.mode]
+    print(parser.usage)
     Task().run()
