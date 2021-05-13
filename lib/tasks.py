@@ -1,4 +1,4 @@
-from lib import trinity
+from denoprolib import trinity
 
 from configparser import ConfigParser, NoOptionError
 import argparse
@@ -7,8 +7,6 @@ import os
 import subprocess
 import glob
 import shutil
-
-from lib import trinity, launcher
 
 class denoproTask(object):
     base_parser = argparse.ArgumentParser(add_help=False,
@@ -21,6 +19,11 @@ class denoproTask(object):
                              default=None)
     config = None
 
+    def read_config(self, config_file):
+        config = ConfigParser()
+        config.read(config_file)
+        return config
+
     def get_denopro_path(self):
         denopro_path = None
         if self.config.has_option('denopro_location', 'denopro_path'):
@@ -31,11 +34,6 @@ class denoproTask(object):
                 print("Please specify the path to where you originally"
                     " downloaded DeNoPro in the config file.")
         return denopro_path
-    
-    def read_config(self, config_file):
-        config = ConfigParser()
-        config.read(config_file)
-        return config
 
     def get_fastq(self):
         fastq_path = None
@@ -99,4 +97,28 @@ class SearchGUI_Peptideshaker(denoproTask):
     
     def run(self):
         path = denoproTask.get_spectra(self)
-        os.system(f"Rscript Searchgui_peptideshaker_edit.R {path}")
+        os.system(f"Rscript denoprolib/Searchgui_peptideshaker_edit.R {path}")
+
+class Novel_Peptide(denoproTask):
+    def __init__(self, **kwargs):
+        if not kwargs:
+            parser = argparse.ArgumentParser(
+                description="identify confident novel peptides",
+                parents=[self.base_parser],
+                formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+            parser.add_argument('dir', metavar="<DIR>",
+                                help="Directory containing customdb output")
+            
+            args = parser.parse_args(sys.argv[2:])
+
+            self.dir = args.dir
+            config_file = args.config_file
+        
+        else:
+            self.dir = kwargs.get('dir')
+            config_file = kwargs.get('config_file')
+        
+        self.config = self.read_config(config_file)
+    
+    def run(self):
+        os.system(f"Rscript denoprolib/Novel_peptide_identification_edit.R {self.dir}")
