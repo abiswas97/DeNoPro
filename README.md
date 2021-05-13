@@ -19,3 +19,17 @@ python setup.py install
 ```
 
 ## Usage
+
+### **Assemble** - denovo assembly of transcript sequences using Trinity
+
+
+### **CustomDB** - Produces custom peptide database from assembled transcripts which are mapped against proteomics spectra
+
+
+### **FindNovel** - Maps potential novel peptides from customdb to a reference tracriptome, outputting a list of confident novel peptides
+
+
+### **Survival**
+
+
+### **NovelORF**
