@@ -12,8 +12,6 @@ DeNoPro provides a pipeline for the identification of novel peptides from matche
 
 Paired or singled end reads are first assembled using Trinity and six-frame translated. This output is used to create a custom peptide database using SearchGUI, which can then be mapped against proteomics data. 
 
-PeeptideShaker
-
 ## Installation
 To install DeNoPro as a python module, open a terminal in the directory containing setup.py, and run
 ```
