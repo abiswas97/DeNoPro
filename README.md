@@ -22,14 +22,43 @@ python setup.py install
 
 ### Assemble 
 denovo assembly of transcript sequences using Trinity
+
 #### Usage
+```
+denopro assemble [options]
+```
+
+#### Options
+* `-c/--config_file`: Point to the path of config file to use. Default is `/denopro.conf`
 
 ### CustomDB 
 Produces custom peptide database from assembled transcripts which are mapped against proteomics spectra
 
+#### Usage
+```
+denopro customdb [options] <spectra>
+```
+
+#### Arguments
+* `<spectra>`: Path to directory containing MS/MS spectra files
+
+#### Options
+* `-c/--config_file`: Point to the path of config file to use. Default is `/denopro.conf`
+
 
 ### FindNovel 
 Maps potential novel peptides from customdb to a reference tracriptome, outputting a list of confident novel peptides
+
+#### Usage
+```
+denopro findnovel [options] <dir>
+```
+
+#### Arguments
+* `<dir>`: Path to directory containing CustomDB output
+
+#### Options
+* `-c/--config_file`: Point to the path of config file to use. Default is `/denopro.conf`
 
 
 ### Survival
