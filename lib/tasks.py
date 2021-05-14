@@ -4,16 +4,10 @@ from configparser import ConfigParser, NoOptionError
 import argparse
 import sys
 import os
-import subprocess
-import glob
-import shutil
 
-class denoproTask(object):
+class configReader():
     base_parser = argparse.ArgumentParser(add_help=False,
                                           formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    base_parser.add_argument('--ncores', '-p', metavar="<CORES>",
-                             help='number of processor cores to use', type=int,
-                             default=1)
     base_parser.add_argument('--config_file', '-c', metavar="<CONFIG_FILE>",
                              help='config file to use',
                              default=None)
@@ -57,27 +51,39 @@ class denoproTask(object):
                     " are stored in the config file.")
         return spectra_path
     
-class Assemble(denoproTask):
+class Assemble(configReader):
     def __init__(self, **kwargs):
         if not kwargs:
             parser = argparse.ArgumentParser(
                 description="Denovo assembly of RNAseq reads",
                 parents=[self.base_parser],
                 formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+            parser.add_argument('--cpu', help="Maximum number of threads to be used by Trinity",
+                                default = '30')
+            parser.add_argument('--max_mem', help="Maximum amount of RAM (in Gs) that can be allocated",
+                                default='50G')
+            parser.add_argument('output_dir', metavar="<OUTPUT_DIR>", help="Output directory for Trinity")
+
             args = parser.parse_args(sys.argv[2:])
 
+            self.cpu = args.cpu
+            self.max_mem = args.max_mem
+            self.output_dir = args.output_dir
             config_file = args.config_file
         
         else:
+            self.cpu = kwargs.get('cpu')
+            self.max_mem = kwargs.get('max_mem')
+            self.output_dir = kwargs.get('output_dir')
             config_file = kwargs.get('config_file')
         
         self.config = self.read_config(config_file)
     
     def run(self):
-        path = denoproTask.get_fastq(self)
-        trinity.nonEmpty(path)
+        path = configReader.get_fastq(self)
+        trinity.nonEmpty(path, self.cpu, self.max_mem, self.output_dir)
 
-class SearchGUI_Peptideshaker(denoproTask):
+class SearchGUI_Peptideshaker(configReader):
     def __init__(self, **kwargs):
         if not kwargs:
             parser = argparse.ArgumentParser(
@@ -96,10 +102,10 @@ class SearchGUI_Peptideshaker(denoproTask):
         self.config = self.read_config(config_file)
     
     def run(self):
-        path = denoproTask.get_spectra(self)
+        path = configReader.get_spectra(self)
         os.system(f"Rscript denoprolib/Searchgui_peptideshaker_edit.R {path}")
 
-class Novel_Peptide(denoproTask):
+class novel_peptide(configReader):
     def __init__(self, **kwargs):
         if not kwargs:
             parser = argparse.ArgumentParser(
@@ -121,4 +127,4 @@ class Novel_Peptide(denoproTask):
         self.config = self.read_config(config_file)
     
     def run(self):
-        os.system(f"Rscript denoprolib/Novel_peptide_identification_edit.R {self.dir}")
+        os.system(f"Rscript denoprolib/novel_peptide_identification_edit.R {self.dir}")
