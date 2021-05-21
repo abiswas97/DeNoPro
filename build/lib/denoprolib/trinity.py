@@ -16,7 +16,7 @@ def runTrinity(path, cpu, max_mem, output_dir):
                 os.system(f"Trinity --seqType fq --normalize_by_read_set"
                 + f" --left {file1} --right {file2} --trimmomatic --full_cleanup"
                 + f" --CPU {cpu} --max_memory {max_mem} --bflyCPU 10 --bflyHeapSpaceMax 4G"
-                + f" --output {output_dir}/{id[0]} --monitoring --verbose")
+                + f" --output {output_dir}/Trinity.{id[0]} --monitoring --verbose")
 
 def nonEmpty(path, cpu, max_mem, output_dir):
     if not os.listdir(path):
