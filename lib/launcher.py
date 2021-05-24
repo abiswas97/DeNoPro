@@ -1,7 +1,7 @@
 import argparse
 import sys
 
-from lib.tasks import assemble, searchguiPeptideshaker, novelPeptide, survivalAnalysis
+from lib.tasks import assemble, searchguiPeptideshaker, novelPeptide, survivalAnalysis, potentialNovelORF
 
 def launch():
     parser = argparse.ArgumentParser(
@@ -38,20 +38,20 @@ def launch():
                         choices = ['assemble', 'customdb', 'findnovel', 'survival', 'novelorf'])
     args = parser.parse_args(sys.argv[1:2])
 
-    tasks = {
+    modes = {
         'assemble': assemble,
         'customdb': searchguiPeptideshaker,
         'findnovel': novelPeptide,
         'survival': survivalAnalysis,
-#        'novelorf': Potential_novel_orf
+        'novelorf': potentialNovelORF
     }
 
     print(parser.usage)
     
-    if args.mode not in tasks:
+    if args.mode not in modes:
         print("Unsupported mode")
         parser.print_help()
         exit(1)
     
-    Task = tasks[args.mode]
-    Task().run()
+    Mode = modes[args.mode]
+    Mode().run()

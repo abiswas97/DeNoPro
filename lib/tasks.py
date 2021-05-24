@@ -160,4 +160,23 @@ class survivalAnalysis(configReader):
     def run(self):
         os.system(f"Rscript denoprolib/Survival_analysis_novel_peptides.R {self.output}")
 
+class potentialNovelORF(configReader):
+    def __init__(self, **kwargs):
+        if not kwargs:
+            parser = argparse.ArgumentParser(
+                description="Survival Analysis",
+                parents=[self.base_parser],
+                formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+            
+            args = parser.parse_args(sys.argv[2:])
+
+            config_file = args.config_file
+        else:
+            config_file = kwargs.get('config_file')
+        
+        self.config = self.read_config(config_file)
+        self.output = self.output_dir()
+    
+    def run(self):
+        os.system(f"sh denoprolib/Potential_novel_ORF.sh {self.output}")
 
