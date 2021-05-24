@@ -40,7 +40,7 @@ class configReader():
                 print("Please specify the path to where spectra files"
                     " are stored in the config file.")
         return spectra_path
-    
+
 class Assemble(configReader):
     def __init__(self, **kwargs):
         if not kwargs:
@@ -91,8 +91,6 @@ class searchguiPeptideshaker(configReader):
                 description="Custom peptide database from assembled transcripts",
                 parents=[self.base_parser],
                 formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-            parser.add_argument('spectra', metavar="<SPECTRA>",
-                                help="Directory containing MS/MS spectra files")
             args = parser.parse_args(sys.argv[2:])
 
             config_file = args.config_file
@@ -101,10 +99,19 @@ class searchguiPeptideshaker(configReader):
             config_file = kwargs.get('config_file')
         
         self.config = self.read_config(config_file)
-    
+
+        self.trinity_out = pathlib.PurePath(self.config.get('directory_locations', 'output_dir'), 'Trinity')
+        self.searchgui = self.config.get('dependency_locations', 'searchgui')
+        self.peptideshaker = self.config.get('dependency_locations', 'peptideshaker')
+        self.hg19 = self.config.get('dependency_locations', 'hg19')
+
+        if self.config.has_option('directory_locations', 'spectra_files'):
+            self.spectra = self.config.get('directory_locations', 'spectra_files')
+        else:
+            print("Please specify a directory containing MS/MS spectra files")
+
     def run(self):
-        path = configReader.get_spectra(self)
-        os.system(f"Rscript denoprolib/Searchgui_peptideshaker_edit.R {path}")
+        os.system(f"Rscript denoprolib/Searchgui_peptideshaker_edit.R {self.spectra} {self.trinity_out} {self.searchgui} {self.peptideshaker} {self.hg19}")
 
 class novelPeptide(configReader):
     def __init__(self, **kwargs):
