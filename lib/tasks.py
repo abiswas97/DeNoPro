@@ -45,7 +45,7 @@ class configReader():
         return denopro_path
     
 
-class Assemble(configReader):
+class assemble(configReader):
     def __init__(self, **kwargs):
         if not kwargs:
             parser = argparse.ArgumentParser(
@@ -70,7 +70,7 @@ class Assemble(configReader):
         
         self.config = self.read_config(config_file)
 
-        self.output_dir = self.trinity_output_dir()
+        self.output = self.trinity_output_dir()
 
         if self.config.has_option('directory_locations', 'fastq_for_trinity'):
             self.fastq = self.config.get('directory_locations', 'fastq_for_trinity')
@@ -83,7 +83,7 @@ class Assemble(configReader):
             self.trinity_path = 'Trinity'
 
     def run(self):
-        trinity.runTrinity(self.trinity_path, self.fastq, self.cpu, self.max_mem, self.output_dir)
+        trinity.runTrinity(self.trinity_path, self.fastq, self.cpu, self.max_mem, self.output)
 
 class searchguiPeptideshaker(configReader):
     def __init__(self, **kwargs):
@@ -127,7 +127,6 @@ class novelPeptide(configReader):
 
             config_file = args.config_file
         else:
-            self.dir = kwargs.get('dir')
             config_file = kwargs.get('config_file')
         
         self.config = self.read_config(config_file)
@@ -140,3 +139,25 @@ class novelPeptide(configReader):
 
     def run(self):
         os.system(f"Rscript denoprolib/novel_peptide_identification_edit.R {self.output} {self.actg}")
+
+class survivalAnalysis(configReader):
+    def __init__(self, **kwargs):
+        if not kwargs:
+            parser = argparse.ArgumentParser(
+                description="Survival Analysis",
+                parents=[self.base_parser],
+                formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+            
+            args = parser.parse_args(sys.argv[2:])
+
+            config_file = args.config_file
+        else:
+            config_file = kwargs.get('config_file')
+        
+        self.config = self.read_config(config_file)
+        self.output = self.output_dir()
+    
+    def run(self):
+        os.system(f"Rscript denoprolib/Survival_analysis_novel_peptides.R {self.output}")
+
+
