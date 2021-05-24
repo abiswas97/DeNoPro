@@ -1,7 +1,7 @@
 import argparse
 import sys
 
-from lib.tasks import Assemble, SearchGUI_Peptideshaker, novel_peptide
+from lib.tasks import Assemble, searchguiPeptideshaker, novelPeptide
 
 def launch():
     parser = argparse.ArgumentParser(
@@ -40,8 +40,8 @@ def launch():
 
     tasks = {
         'assemble': Assemble,
-        'customdb': SearchGUI_Peptideshaker,
-        'findnovel': novel_peptide,
+        'customdb': searchguiPeptideshaker,
+        'findnovel': novelPeptide,
 #        'survival': Survival_analysis,
 #        'novelorf': Potential_novel_orf
     }

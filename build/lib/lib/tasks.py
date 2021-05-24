@@ -29,17 +29,6 @@ class configReader():
                 print("Please specify the path to where you originally"
                     " downloaded DeNoPro in the config file.")
         return denopro_path
-
-    def get_fastq(self):
-        fastq_path = None
-        if self.config.has_option('directory_locations', 'fastq_for_trinity'):
-            path = self.config.get('directory_locations', 'fastq_for_trinity')
-            if os.path.exists(path):
-                fastq_path = path
-            else:
-                print("Please specify the path to where FASTQ reads"
-                    " are stored in the config file.")
-        return fastq_path
     
     def get_spectra(self):
         spectra_path = None
@@ -77,16 +66,25 @@ class Assemble(configReader):
         
         self.config = self.read_config(config_file)
 
+        if self.config.has_option('directory_locations', 'fastq_for_trinity'):
+            self.fastq = self.config.get('directory_locations', 'fastq_for_trinity')
+        else:
+            print("Please specify a directory containing FASTQ files")
+        
         if self.config.has_option('directory_locations', 'output_dir'):
             self.output_dir = pathlib.PurePath(self.config.get('directory_locations', 'output_dir'), 'Trinity')
         else:
             print("Please specify an output directory")
-    
-    def run(self):
-        path = configReader.get_fastq(self)
-        trinity.nonEmpty(path, self.cpu, self.max_mem, self.output_dir)
+        
+        if self.config.has_option('dependency_locations', 'trinity'):
+            self.trinity_path = self.config.get('dependency_locations', 'trinity')
+        else:
+            self.trinity_path = 'Trinity'
 
-class SearchGUI_Peptideshaker(configReader):
+    def run(self):
+        trinity.runTrinity(self.trinity_path, self.fastq, self.cpu, self.max_mem, self.output_dir)
+
+class searchguiPeptideshaker(configReader):
     def __init__(self, **kwargs):
         if not kwargs:
             parser = argparse.ArgumentParser(
@@ -108,7 +106,7 @@ class SearchGUI_Peptideshaker(configReader):
         path = configReader.get_spectra(self)
         os.system(f"Rscript denoprolib/Searchgui_peptideshaker_edit.R {path}")
 
-class novel_peptide(configReader):
+class novelPeptide(configReader):
     def __init__(self, **kwargs):
         if not kwargs:
             parser = argparse.ArgumentParser(
