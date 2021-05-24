@@ -19,6 +19,14 @@ class configReader():
         config.read(config_file)
         return config
 
+    def trinity_output_dir(self):
+        if self.config.has_option('directory_locations', 'output_dir'):
+            trinity_output_dir = pathlib.PurePath(self.config.get('directory_locations', 'output_dir'), 'Trinity')
+        else:
+            print("Please specify an output directory in the configuration file.")
+        return trinity_output_dir
+
+
     def get_denopro_path(self):
         denopro_path = None
         if self.config.has_option('denopro_location', 'denopro_path'):
@@ -30,16 +38,6 @@ class configReader():
                     " downloaded DeNoPro in the config file.")
         return denopro_path
     
-    def get_spectra(self):
-        spectra_path = None
-        if self.config.has_option('directory_locations', 'spectra_files'):
-            path = self.config.get('directory_locations', 'spectra_files')
-            if os.path.exists(path):
-                spectra_path = path
-            else:
-                print("Please specify the path to where spectra files"
-                    " are stored in the config file.")
-        return spectra_path
 
 class Assemble(configReader):
     def __init__(self, **kwargs):
@@ -66,15 +64,12 @@ class Assemble(configReader):
         
         self.config = self.read_config(config_file)
 
+        self.output_dir = self.trinity_output_dir()
+
         if self.config.has_option('directory_locations', 'fastq_for_trinity'):
             self.fastq = self.config.get('directory_locations', 'fastq_for_trinity')
         else:
             print("Please specify a directory containing FASTQ files")
-        
-        if self.config.has_option('directory_locations', 'output_dir'):
-            self.output_dir = pathlib.PurePath(self.config.get('directory_locations', 'output_dir'), 'Trinity')
-        else:
-            print("Please specify an output directory")
         
         if self.config.has_option('dependency_locations', 'trinity'):
             self.trinity_path = self.config.get('dependency_locations', 'trinity')
@@ -100,7 +95,7 @@ class searchguiPeptideshaker(configReader):
         
         self.config = self.read_config(config_file)
 
-        self.trinity_out = pathlib.PurePath(self.config.get('directory_locations', 'output_dir'), 'Trinity')
+        self.trinity_out = self.trinity_output_dir()
         self.searchgui = self.config.get('dependency_locations', 'searchgui')
         self.peptideshaker = self.config.get('dependency_locations', 'peptideshaker')
         self.hg19 = self.config.get('dependency_locations', 'hg19')

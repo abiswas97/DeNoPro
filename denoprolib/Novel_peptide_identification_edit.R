@@ -8,6 +8,7 @@ library(data.table)
 library(XML)
 
 working_dir = args[1]
+actg_dir = args[2]
 setwd(working_dir)
 
 peptide_report<-list.files(pattern="*Peptide_Report.txt",recursive=TRUE)
@@ -21,10 +22,12 @@ for (k in 1:length(peptide_report)){
 	r3<-subset(r3,Validation=="Confident")
 	r4<-read.delim(psm_report[k])
 	print(psm_report[k])
+
 	m<-merge(r4,r3,by="Sequence")
 	m1<-m[,c("Sequence","Protein.s..x","Modified.Sequence.x","Variable.Modifications.x","Fixed.Modifications.x","Spectrum.Title","Confidence.....x","Validation.x")]
 	m2<-subset(m1,Validation.x=="Confident")
-	list <- strsplit(as.character(peptide_report[k]), split="/")
+	
+    list <- strsplit(as.character(peptide_report[k]), split="/")
 	df <- ldply(list)
 	write.csv(m2,file=paste("Novel_Confident_Peptides_PSMs",df$V1,'csv',sep='.'))
 	}
@@ -44,7 +47,7 @@ for (k in 1:length(conf_peptide_psm)) {
 
 peptide_for_actg<-list.files(pattern="^novel_peptides_for_ACTG",recursive=TRUE)
 for (k in 1:length(peptide_for_actg)) {
-	data <- xmlParse("./Resources/ACTG/mapping_params.xml")
+	data <- xmlParse(actg_dir,"/mapping_params.xml")
 	invisible(replaceNodes(data[["//Input/text()"]], newXMLTextNode(peptide_for_actg[k])))
 	list <- strsplit(as.character(peptide_for_actg[k]), split="/")
 	df1 <- ldply(list)
@@ -55,7 +58,7 @@ xml_out<-list.files(pattern="*txt.xml",recursive=TRUE)
 for (k in 1:length(xml_out)) {
 	i<-xml_out[k]
 	print(i)
-	cmd<-paste("java -Xmx8G -Xss2m -jar ./Resources/ACTG/ACTG_mapping.jar ",i)
+	cmd<-paste("java -Xmx8G -Xss2m -jar ",actg_dir,"/ACTG_mapping.jar ",i)
 	system(cmd)
 	}
 
