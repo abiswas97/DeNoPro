@@ -164,7 +164,7 @@ class potentialNovelORF(configReader):
     def __init__(self, **kwargs):
         if not kwargs:
             parser = argparse.ArgumentParser(
-                description="Survival Analysis",
+                description="Identify potential novel ORFsz",
                 parents=[self.base_parser],
                 formatter_class=argparse.ArgumentDefaultsHelpFormatter)
             

@@ -1,7 +1,7 @@
 import argparse
 import sys
 
-from lib.tasks import Assemble, searchguiPeptideshaker, novelPeptide
+from lib.tasks import assemble, searchguiPeptideshaker, novelPeptide, survivalAnalysis, potentialNovelORF
 
 def launch():
     parser = argparse.ArgumentParser(
@@ -34,24 +34,24 @@ def launch():
 
         denopro <mode> -h for specific help
         """)
-    parser.add_argument('mode', metavar = "<MODE>", help = 'denopro mode (assemble, customdb, findnovel, survival or novelorf)',
+    parser.add_argument('--mode', metavar = "<MODE>", help = 'denopro mode (assemble, customdb, findnovel, survival or novelorf)',
                         choices = ['assemble', 'customdb', 'findnovel', 'survival', 'novelorf'])
     args = parser.parse_args(sys.argv[1:2])
 
-    tasks = {
-        'assemble': Assemble,
+    modes = {
+        'assemble': assemble,
         'customdb': searchguiPeptideshaker,
         'findnovel': novelPeptide,
-#        'survival': Survival_analysis,
-#        'novelorf': Potential_novel_orf
+        'survival': survivalAnalysis,
+        'novelorf': potentialNovelORF
     }
 
     print(parser.usage)
     
-    if args.mode not in tasks:
+    if args.mode not in modes:
         print("Unsupported mode")
         parser.print_help()
         exit(1)
     
-    Task = tasks[args.mode]
-    Task().run()
+    Mode = modes[args.mode]
+    Mode().run()
