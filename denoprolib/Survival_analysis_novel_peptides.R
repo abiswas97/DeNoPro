@@ -1,7 +1,13 @@
+#!/usr/bin/Rscript
+args <- commandArgs(TRUE)
+
 library("data.table")
 library("reshape2")
 library("survival")
 library("survminer")
+
+working_dir = args[1]
+setwd(working_dir)
 
 T1<-read.csv("GENE_PEPTIDE_FILE_NUMBER_OF_PEPTIDES_NORMALISED_COUNT.csv",header=TRUE)
 colnames(T1)[1]<-"id"
