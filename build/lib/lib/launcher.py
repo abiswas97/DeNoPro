@@ -34,7 +34,7 @@ def launch():
 
         denopro <mode> -h for specific help
         """)
-    parser.add_argument('mode', metavar = "mode", help = 'denopro mode (assemble, customdb, findnovel, survival or novelorf)',
+    parser.add_argument('mode', metavar = "<MODE>", help = 'denopro mode (assemble, customdb, findnovel, survival or novelorf)',
                         choices = ['assemble', 'customdb', 'findnovel', 'survival', 'novelorf'])
     args = parser.parse_args(sys.argv[1:2])
 
@@ -52,6 +52,6 @@ def launch():
         print("Unsupported mode")
         parser.print_help()
         exit(1)
-    
+
     Mode = modes[args.mode]
     Mode().run()

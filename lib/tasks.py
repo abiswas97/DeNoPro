@@ -180,3 +180,5 @@ class potentialNovelORF(configReader):
     def run(self):
         os.system(f"sh denoprolib/Potential_novel_ORF.sh {self.output}")
 
+
+

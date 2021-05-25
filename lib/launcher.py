@@ -52,6 +52,6 @@ def launch():
         print("Unsupported mode")
         parser.print_help()
         exit(1)
-    
+
     Mode = modes[args.mode]
     Mode().run()
