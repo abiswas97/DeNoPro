@@ -5,8 +5,7 @@ import sys
 from os import path
 from configparser import ConfigParser
 
-
-CONFIG_FILE = path.join(path.dirname(__file__), r"test.conf")
+CONFIG_FILE = ("/mnt/c/Users/avish/Documents/denogui/test.conf")
 parser = ConfigParser()
 parser.optionxform = str
 parser.read(CONFIG_FILE)

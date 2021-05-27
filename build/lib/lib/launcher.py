@@ -1,8 +1,17 @@
 import argparse
 import sys
 import time
+import os
 
 from lib.tasks import assemble, searchguiPeptideshaker, novelPeptide, survivalAnalysis, potentialNovelORF
+from lib import denoprogui
+
+class launchGUI(argparse.Action):
+    def __call__(self, parser, values, namespace, option_string):
+        print("Launching GUI")
+        time.sleep(1)
+        denoprogui.main()
+        parser.exit()
 
 def launch():
     parser = argparse.ArgumentParser(
@@ -37,7 +46,8 @@ def launch():
         """)
     parser.add_argument('mode', metavar = "<MODE>", help = 'denopro mode (assemble, customdb, findnovel, survival or novelorf)',
                         choices = ['assemble', 'customdb', 'findnovel', 'survival', 'novelorf'])
-    args = parser.parse_args(sys.argv[1:2])
+    parser.add_argument('-g','--gui', help = 'Launches the GUI functionality',nargs = 0, action=launchGUI)
+    args = parser.parse_args(sys.argv[1:3])
 
     modes = {
         'assemble': assemble,
@@ -49,6 +59,11 @@ def launch():
 
     print(parser.usage)
     time.sleep(2)
+ 
+#    if args.gui:
+#        print("Launching GUI")
+#        time.sleep(1)
+#        os.system('python denoprogui.py')
 
     if args.mode not in modes:
         print("Unsupported mode")
@@ -57,3 +72,5 @@ def launch():
 
     Mode = modes[args.mode]
     Mode().run()
+
+    

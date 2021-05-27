@@ -9,5 +9,6 @@ denoprolib/__init__.py
 denoprolib/trinity.py
 lib/__init__.py
 lib/__main__.py
+lib/denoprogui.py
 lib/launcher.py
 lib/tasks.py
