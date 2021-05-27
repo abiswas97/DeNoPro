@@ -1,5 +1,6 @@
 import argparse
 import sys
+import time
 
 from lib.tasks import assemble, searchguiPeptideshaker, novelPeptide, survivalAnalysis, potentialNovelORF
 
@@ -47,7 +48,8 @@ def launch():
     }
 
     print(parser.usage)
-    
+    time.sleep(2)
+
     if args.mode not in modes:
         print("Unsupported mode")
         parser.print_help()
