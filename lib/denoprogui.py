@@ -2,7 +2,7 @@ import configparser
 import PySimpleGUI as sg
 import subprocess
 import sys
-import os
+from os import path
 from configparser import ConfigParser
 
 # this dict will be updated and then saved to original conf file
@@ -66,7 +66,6 @@ def save_config(config_file,parser,values):
     sg.popup('Configuration saved!')
 
 def create_parser(default):
-#    new_path = path.join(path.dirname(__file__), r"new_config.conf") 
     new_parser = configparser.ConfigParser()
     for section,keys in default.items():
         new_parser.add_section(section)
@@ -97,8 +96,7 @@ def create_conf_window(parser):
         [TextLabel('Theme'), sg.Combo(sg.theme_list(), size=(20, 20), key='-THEME-')],
         [sg.Text('')],
         [sg.Text('')],
-#        [sg.HSeparator()],
-        [sg.Button('Save',key='-save-'), sg.Button('Save As'),sg.Button('Exit')]
+        [sg.Button('Save'), sg.Button('Save As'),sg.Button('Exit')]
     ]
     window = sg.Window("Config", layout, keep_on_top=True, finalize=True)
 
@@ -119,22 +117,29 @@ def main():
     command_to_run = 'denopro '
     layout = [
         [sg.Text('        DeNoPro : de novo Proteogenomics Pipeline', font='Helvetica 20', justification='c')],
+        
         [sg.Text('')],
+        
         [sg.Text('Mode', size=(6,1), justification='r'), 
             sg.Combo(['assemble','customdb','findnovel','survival','novelorf'],key='mode'),
             sg.Text('CPU:', size=(6,1), justification='r'), 
             sg.Input(size=(3,1), key='cpu'), 
             sg.Text('Max mem:', size=(9,1), justification='r'), 
             sg.Input(size=(3,1), key='max_mem')],
+        
         [sg.Text('Config', size=(6,1), justification='r'), 
-            sg.Input(key='-config-', enable_events=True,change_submits=True),
-            sg.FileBrowse('Select', file_types= (('Config Files','*.conf'),('INI files','*.ini')),target='-config-',enable_events=True), 
+            sg.Input(key='-config-', enable_events=True),
+            sg.FileBrowse('Select',target='-config-',file_types=(('Config Files','*.conf'),('INI files','*.ini'))), 
             sg.Button('Change Configuration')],
+        
         [sg.Text('')],
         #output
         [sg.Text('Final Command:')], 
+        
         [sg.Text(size=(70,3),key='command_line', text_color='red',font='Courier 8')],
+        
         [sg.MLine(size=(90,20), reroute_stdout=True, reroute_stderr=True, reroute_cprint=True, write_only=True, font='Courier 10', autoscroll=True, key='-ML-')],
+        
         [sg.Button('Start', button_color=('white','green'),mouseover_colors=('green','white')), 
             sg.Button('Exit', button_color=('white','#8a2815'))]
     ]   
@@ -155,10 +160,9 @@ def main():
                 event,values = create_conf_window(parser).read(close=True)
                 if event == 'Save':
                     save_config(chosenConfig,parser,values)
-                if event == 'Save As':
-                    filename = sg.popup_get_text('File Name')
-                    newConfig = os.path.join(os.path.dirname(__file__),r'Configurations' ,f'{filename}.conf')
-                    save_config(newConfig,createdParser,values)
+                elif event == 'Save As':
+                    filename = sg.popup_get_text('File Name: Please Enter Full Path')
+                    save_config(filename,parser,values)
             else:
                 sg.popup('No config file selected, will create one for you...')
                 createdParser = create_parser(default_conf) 
@@ -166,10 +170,9 @@ def main():
                 event,values = create_conf_window(createdParser).read(close=True)
                 if event == 'Save':
                     sg.popup('Please Save As a new file.')
-                if event == 'Save As':
-                    filename = sg.popup_get_text('File Name')
-                    newConfig = os.path.join(os.path.dirname(__file__),r'Configurations' ,f'{filename}.conf')
-                    save_config(newConfig,createdParser,values)
+                elif event == 'Save As':
+                    filename = sg.popup_get_text('File Name: Please Enter Full Path')
+                    save_config(filename,createdParser,values)
         # Main Loop
         if event == 'Start':
             params = ''
