@@ -5,11 +5,6 @@ import sys
 from os import path
 from configparser import ConfigParser
 
-CONFIG_FILE = ("/mnt/c/Users/avish/Documents/denogui/test.conf")
-parser = ConfigParser()
-parser.optionxform = str
-parser.read(CONFIG_FILE)
-
 # this dict will be updated and then saved to original conf file
 conf_keys = {
     'output_dir': ['directory_locations','','-OUTDIR-'],
@@ -119,20 +114,21 @@ def create_conf_window(parser):
 #              Main Program and Event Loop 
 ############################################################
 def main():
-    main_window, parser = None, load_parser(CONFIG_FILE)
+    sg.theme('SystemDefaultForReal')
+    main_window = None
 
     command_to_run = 'denopro '
     layout = [
-        [sg.Text('DeNoPro : de novo Proteogenomics Pipeline', font='Helvetica 20', justification='c')],
+        [sg.Text('        DeNoPro : de novo Proteogenomics Pipeline', font='Helvetica 20', justification='c')],
         [sg.Text('')],
         [sg.Text('Mode', size=(6,1), justification='r'), sg.Combo(['assemble','customdb','findnovel','survival','novelorf'],key='mode'),sg.Text('CPU:', size=(6,1), justification='r'), sg.Input(size=(3,1), key='cpu'), sg.Text('Max mem:', size=(9,1), justification='r'), sg.Input(size=(3,1), key='max_mem')],
-        [sg.Text('Config', size=(6,1), justification='r'), sg.Input(key='-config-'),sg.FileBrowse('Select', target='-config-')],
+        [sg.Text('Config', size=(6,1), justification='r'), sg.Input(key='-config-', enable_events=True,change_submits=True),sg.FileBrowse('Select', target='-config-',enable_events=True)],
         [sg.Text('')],
         #output
         [sg.Text('Final Command:')], 
-        [sg.Text(size=(70,5),key='command_line', text_color='yellow',font='Courier 10')],
+        [sg.Text(size=(70,5),key='command_line', text_color='red',font='Courier 10')],
         [sg.MLine(size=(90,20), reroute_stdout=True, reroute_stderr=True, reroute_cprint=True, write_only=True, font='Courier 10', autoscroll=True, key='-ML-')],
-        [sg.Button("Start"), sg.Button('Exit'), sg.Button('Change Configuration')]
+        [sg.Button("Start", button_color=('white','green'),mouseover_colors=('green','white')), sg.Button('Exit', button_color=('white','#8a2815')), sg.Button('Change Configuration')]
     ]   
 
     main_window = sg.Window('DeNoGUI', layout, finalize=True)
@@ -145,13 +141,20 @@ def main():
         # Config Loop
         if event == 'Change Configuration':
             # set the main config (if called)
-            event,values = create_conf_window(parser).read(close=True)
-            if event == 'Save':
-                save_config(CONFIG_FILE,parser,values)
+            if values['-config-']:
+                chosenConfig = values['-config-']
+                parser = load_parser(chosenConfig)
+                event,values = create_conf_window(parser).read(close=True)
+                if event == 'Save':
+                    save_config(chosenConfig,parser,values)
+            else:
+                sg.popup('No config file selected, will create one for you...')
         # Main Loop
         if event == 'Start':
             params = ''
-            params += f"{values['mode']} -c {values['config']} --cpu {values['cpu']} --max_mem {values['max_mem']}G"
+            params += f"{values['mode']} -c {values['-config-']}" 
+            if values['mode'] == 'assemble':
+                params += f" --cpu {values['cpu']} --max_mem {values['max_mem']}G"
             command = command_to_run + params
             main_window['command_line'].update(command)
             runCommand(cmd = command, window=main_window)

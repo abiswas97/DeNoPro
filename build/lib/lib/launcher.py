@@ -47,7 +47,7 @@ def launch():
     parser.add_argument('mode', metavar = "<MODE>", help = 'denopro mode (assemble, customdb, findnovel, survival or novelorf)',
                         choices = ['assemble', 'customdb', 'findnovel', 'survival', 'novelorf'])
     parser.add_argument('-g','--gui', help = 'Launches the GUI functionality',nargs = 0, action=launchGUI)
-    args = parser.parse_args(sys.argv[1:3])
+    args = parser.parse_args(sys.argv[1:2])
 
     modes = {
         'assemble': assemble,
@@ -58,12 +58,7 @@ def launch():
     }
 
     print(parser.usage)
-    time.sleep(2)
- 
-#    if args.gui:
-#        print("Launching GUI")
-#        time.sleep(1)
-#        os.system('python denoprogui.py')
+    time.sleep(1)
 
     if args.mode not in modes:
         print("Unsupported mode")
