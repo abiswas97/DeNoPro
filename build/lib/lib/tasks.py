@@ -106,6 +106,7 @@ class searchguiPeptideshaker(configReader):
         self.peptideshaker = self.config.get('dependency_locations', 'peptideshaker')
         self.hg19 = self.config.get('dependency_locations', 'hg19')
         self.output = self.output_dir()
+        self.denopropath = self.config.get('denopro_location', 'denopro_path')
 
         if self.config.has_option('directory_locations', 'spectra_files'):
             self.spectra = self.config.get('directory_locations', 'spectra_files')
@@ -113,7 +114,7 @@ class searchguiPeptideshaker(configReader):
             print("Please specify a directory containing MS/MS spectra files")
 
     def run(self):
-        os.system(f"Rscript denoprolib/Searchgui_peptideshaker_edit.R {self.spectra} {self.trinity_out} {self.searchgui} {self.peptideshaker} {self.hg19} {self.output}")
+        os.system(f"Rscript {self.denopropath}/denoprolib/Searchgui_peptideshaker_edit.R {self.spectra} {self.trinity_out} {self.searchgui} {self.peptideshaker} {self.hg19} {self.output}")
 
 class novelPeptide(configReader):
     def __init__(self, **kwargs):
@@ -131,14 +132,15 @@ class novelPeptide(configReader):
         
         self.config = self.read_config(config_file)
         self.output = self.output_dir()
-    
+        self.denopropath = self.config.get('denopro_location', 'denopro_path')
+
         if self.config.has_option('dependency_locations', 'actg'):
             self.actg = self.config.get('dependency_locations', 'actg')
         else:
             print("Please specify the directory containing ACTG")
 
     def run(self):
-        os.system(f"Rscript denoprolib/novel_peptide_identification_edit.R {self.output} {self.actg}")
+        os.system(f"Rscript {self.denopropath}/denoprolib/novel_peptide_identification_edit.R {self.output} {self.actg}")
 
 class survivalAnalysis(configReader):
     def __init__(self, **kwargs):
@@ -156,9 +158,10 @@ class survivalAnalysis(configReader):
         
         self.config = self.read_config(config_file)
         self.output = self.output_dir()
-    
+        self.denopropath = self.config.get('denopro_location', 'denopro_path')
+
     def run(self):
-        os.system(f"Rscript denoprolib/Survival_analysis_novel_peptides.R {self.output}")
+        os.system(f"Rscript {self.denopropath}/denoprolib/Survival_analysis_novel_peptides.R {self.output}")
 
 class potentialNovelORF(configReader):
     def __init__(self, **kwargs):
@@ -176,9 +179,10 @@ class potentialNovelORF(configReader):
         
         self.config = self.read_config(config_file)
         self.output = self.output_dir()
-    
+        self.denopropath = self.config.get('denopro_location', 'denopro_path')
+
     def run(self):
-        os.system(f"sh denoprolib/Potential_novel_ORF.sh {self.output}")
+        os.system(f"sh {self.denopropath}/denoprolib/Potential_novel_ORF.sh {self.output}")
 
 
 
