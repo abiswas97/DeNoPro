@@ -96,7 +96,9 @@ def create_conf_window(parser):
         [TextLabel('Theme'), sg.Combo(sg.theme_list(), size=(20, 20), key='-THEME-')],
         [sg.Text('')],
         [sg.Text('')],
-        [sg.Button('Save'), sg.Button('Save As'),sg.Button('Exit')]
+        [sg.Button('Save'), 
+            sg.InputText('', do_not_clear=False, visible=False, key='-filename-',enable_events=True),
+            sg.FileSaveAs('Save As'),sg.Button('Exit')]
     ]
     window = sg.Window("Config", layout, keep_on_top=True, finalize=True)
 
@@ -160,8 +162,8 @@ def main():
                 event,values = create_conf_window(parser).read(close=True)
                 if event == 'Save':
                     save_config(chosenConfig,parser,values)
-                elif event == 'Save As':
-                    filename = sg.popup_get_text('File Name: Please Enter Full Path')
+                elif event == '-filename-':
+                    filename = values['-filename-']
                     save_config(filename,parser,values)
             else:
                 sg.popup('No config file selected, will create one for you...')
@@ -170,8 +172,8 @@ def main():
                 event,values = create_conf_window(createdParser).read(close=True)
                 if event == 'Save':
                     sg.popup('Please Save As a new file.')
-                elif event == 'Save As':
-                    filename = sg.popup_get_text('File Name: Please Enter Full Path')
+                elif event == '-filename-':
+                    filename = values['-filename-']
                     save_config(filename,createdParser,values)
         # Main Loop
         if event == 'Start':
