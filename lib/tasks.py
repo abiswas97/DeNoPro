@@ -28,10 +28,10 @@ class configReader():
     
     def trinity_output_dir(self):
         if self.config.has_option('directory_locations', 'output_dir'):
-            trinity_output_dir = pathlib.PurePath(self.config.get('directory_locations', 'output_dir'), 'Trinity')
+            trinity_output = pathlib.PurePath(self.config.get('directory_locations', 'output_dir'), 'Trinity')
         else:
             print("Please specify an output directory in the configuration file.")
-        return trinity_output_dir
+        return trinity_output
 
     def get_denopro_path(self):
         denopro_path = None

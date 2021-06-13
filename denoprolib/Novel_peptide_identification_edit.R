@@ -7,9 +7,9 @@ library(tidyr)
 library(data.table)
 library(XML)
 
-working_dir = args[1]
+output_dir = args[1]
 actg_dir = args[2]
-setwd(working_dir)
+setwd(output_dir)
 
 peptide_report<-list.files(pattern="*Peptide_Report.txt",recursive=TRUE)
 psm_report<-list.files(pattern="*PSM_Report.txt",recursive=TRUE)
@@ -53,6 +53,7 @@ for (k in 1:length(peptide_for_actg)) {
 	df1 <- ldply(list)
 	saveXML(data,file=paste(df1$V1,'xml',sep='.'))
 	}
+
 
 xml_out<-list.files(pattern="*txt.xml",recursive=TRUE)
 for (k in 1:length(xml_out)) {
