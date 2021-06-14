@@ -137,10 +137,32 @@ class novelPeptide(configReader):
         if self.config.has_option('dependency_locations', 'actg'):
             self.actg = self.config.get('dependency_locations', 'actg')
         else:
-            print("Please specify the directory containing ACTG")
+            print("Please specify the directory containing ACTG.")
+
+        if self.config.has_option('actg_options', 'mapping_method'):
+            self.mapping_method = self.config.get('actg_options','mapping_method')
+        else:
+            print("Please specify a mapping method to use.")
+
+        if self.config.has_option('actg_options', 'protein_database'):
+            self.proteindb = self.config.get('actg_options','protein_database')
+        else:
+            print("Please specify a FASTA file containing protein database to be mapped.")
+
+        if self.config.has_option('actg_options', 'serialization_file'):
+            self.ser_file = self.config.get('actg_options','serialization_file')
+        else:
+            print("Please specify a path to the serialization file of variant splice graph.")
+
+        if self.config.has_option('actg_options', 'ref_genome'):
+            self.ref_genome = self.config.get('actg_options','ref_genome')
+        else:
+            print("Please specify a path to a reference genome.")
 
     def run(self):
-        os.system(f"Rscript {self.denopropath}/denoprolib/novel_peptide_identification_edit.R {self.output} {self.actg}")
+        os.system(f"Rscript {self.denopropath}/denoprolib/novel_peptide_identification_edit.R \
+            {self.output} {self.actg} {self.mapping_method} {self.proteindb} {self.ser_file} \
+                {self.ref_genome}")
 
 class survivalAnalysis(configReader):
     def __init__(self, **kwargs):
