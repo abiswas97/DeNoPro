@@ -1,22 +1,20 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <Params>
 	<Construction>
 		<Inputs>
-			<!-- Path of a folder which contains transcriptome models. -->
-			<Input format="GTF" type="transcriptome">/home/hari/Desktop/ACTG/ACTG_v1.11/GTF</Input>
-			<!-- Path of a folder which contains reference genome. -->
+			
+			<Input format="GTF" type="transcriptome">path/to/gtf</Input>
+			
 			<Input format="FASTA" type="referenceGenome">/home/hari/Desktop/ACTG/ACTG_v1.11/FASTA</Input>
 		</Inputs>
 
 		<Outputs>
-			<!-- Name of a constructed variant splice graph file. -->
-			<Output format="ser" type="graphFile">graph.ser</Output>
+			
+			<Output format="ser" type="graphFile">Output/graph.ser</Output>
 		</Outputs>
 	</Construction>
 
 	<Systems>
-		<!-- Setting the number of threads. A proper setting can increase the speed of construction. -->
+		
 		<TheNumberOfThreads>3</TheNumberOfThreads>
 	</Systems>
 </Params>
-

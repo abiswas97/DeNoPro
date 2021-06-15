@@ -28,10 +28,10 @@ class configReader():
     
     def trinity_output_dir(self):
         if self.config.has_option('directory_locations', 'output_dir'):
-            trinity_output_dir = pathlib.PurePath(self.config.get('directory_locations', 'output_dir'), 'Trinity')
+            trinity_output = pathlib.PurePath(self.config.get('directory_locations', 'output_dir'), 'Trinity')
         else:
             print("Please specify an output directory in the configuration file.")
-        return trinity_output_dir
+        return trinity_output
 
     def get_denopro_path(self):
         denopro_path = None
@@ -123,11 +123,15 @@ class novelPeptide(configReader):
                 description="identify confident novel peptides",
                 parents=[self.base_parser],
                 formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-            
+            parser.add_argument('--splice_graph','-s', help='Construct a variant splice graph')
+
             args = parser.parse_args(sys.argv[2:])
 
+            self.splice_graph = args.splice_graph
             config_file = args.config_file
+
         else:
+            self.splice_graph = kwargs.get('splice_graph')
             config_file = kwargs.get('config_file')
         
         self.config = self.read_config(config_file)
@@ -137,10 +141,35 @@ class novelPeptide(configReader):
         if self.config.has_option('dependency_locations', 'actg'):
             self.actg = self.config.get('dependency_locations', 'actg')
         else:
-            print("Please specify the directory containing ACTG")
+            print("Please specify the directory containing ACTG.")
+
+        if self.config.has_option('actg_options', 'mapping_method'):
+            self.mapping_method = self.config.get('actg_options','mapping_method')
+        else:
+            print("Please specify a mapping method to use.")
+
+        if self.config.has_option('actg_options', 'protein_database'):
+            self.proteindb = self.config.get('actg_options','protein_database')
+        else:
+            print("Please specify a FASTA file containing protein database to be mapped.")
+
+        if self.config.has_option('actg_options', 'serialization_file'):
+            self.ser_file = self.config.get('actg_options','serialization_file')
+        else:
+            print("Please specify a path to the serialization file of variant splice graph.")
+
+        if self.config.has_option('actg_options', 'ref_genome'):
+            self.ref_genome = self.config.get('actg_options','ref_genome')
+        else:
+            print("Please specify a path to a reference genome.")
 
     def run(self):
-        os.system(f"Rscript {self.denopropath}/denoprolib/novel_peptide_identification_edit.R {self.output} {self.actg}")
+        if self.splice_graph:
+            os.system(f"java -Xmx8G -Xss2m -jar {self.actg}/ACTG_construction.jar const_params.xml")
+
+        os.system(f"Rscript {self.denopropath}/denoprolib/novel_peptide_identification_edit.R \
+            {self.output} {self.actg} {self.mapping_method} {self.proteindb} {self.ser_file} \
+                {self.ref_genome}")
 
 class survivalAnalysis(configReader):
     def __init__(self, **kwargs):

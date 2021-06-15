@@ -1,61 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Params>
-	<Mapping>
-		<Environment>
-			<!-- 
+  <Mapping>
+    <Environment>
+      <!-- 
 			PV: Mapping [P]rotein database first, then next [V]ariant splice graph.
 			PS: Mapping [P]rotein database first, then next [S]ix-frame translation.
 			VO: Mapping [V]ariant splice graph [O]nly.
 			SO: Mapping [S]ix-frame translation [O]nly.
 			-->
-			<MappingMethod>PV</MappingMethod>
-
-			<!-- Yes/No: consider isoleucine and leucine as the same. -->
-			<ILSame>No</ILSame>
-			
-			<!-- Path of a peptide list file that a user wants to map. -->
-			<Input format="list" type="peptideList">/home/hari/Desktop/ACTG/ACTG_v1.11/peptides_pseudo_breast_cancer.txt</Input>
-
-			<!-- Path of a folder where the output files will be located. -->
-			<Output type="outputPath">/home/hari/Desktop/ACTG/ACTG_v1.11/peptides_pseudo_breast</Output>
-		</Environment>
-
-		<ProteinDB>
-			<!-- If a user sets "MappingMethod" as P[V|S], then the user should provide a folder path containing protein database. -->
-			<Input format="FASTA" type="proteinDB">/home/hari/Desktop/ACTG/ACTG_v1.11/uniprot_nextprot_human.fasta</Input>
-
-			<!-- Yes/No: automatically consider single amino-acid variant when mapping on protein database. -->
-			<SAVs>Yes</SAVs>
-		</ProteinDB>
-
-		<VariantSpliceGraph>
-			<!-- Serialization file path of the variant splice graph. -->
-			<Input format="ser" type="graphFile">graph.ser</Input>
-
-			<!-- Yes/No: consider junction variation events. -->
-			<JunctionVariation>yes</JunctionVariation>
-
-			<!-- Yes/No: consider single exon skipping events. -->
-			<ExonSkipping>yes</ExonSkipping>
-
-			<!-- Yes/No: consider intron mapping (exon-extension) events. -->
-			<IntronMapping>yes</IntronMapping>
-
-			<!-- If a user gives a VCF (variant call format), then this setting must be "yes". -->
-			<Mutation>No</Mutation>
-
-			<!-- If "Mutation" tag is set as "yes", then a user should provide the path of folder where VCF files are. -->
-			<Input format="VCF" type="mutation">VCF</Input>
-		</VariantSpliceGraph>
-
-		<SixFrameTranslation>
-			<!-- If a user sets "MappingMethod" as PS or SO, then the user should provide the path of folder where reference genome files are. -->
-			<Input format="FASTA" type="referenceGenome">data/GRCh37.fa</Input>
-		</SixFrameTranslation>
-	</Mapping>
-
-	<Systems>
-		<!-- A user can set the number of threads. A proper setting can increase the speed of mapping. -->
-		<TheNumberOfThreads>3</TheNumberOfThreads>
-	</Systems>
+      <MappingMethod>PV</MappingMethod>
+      <!-- Yes/No: consider isoleucine and leucine as the same. -->
+      <ILSame>No</ILSame>
+      <!-- Path of a peptide list file that a user wants to map. -->
+      <Input format="list" type="peptideList">/mnt/c/Users/avish/Documents/MSCTR/Proteogenomics</Input>
+      <!-- Path of a folder where the output files will be located. -->
+      <Output type="outputPath">/home/hari/Desktop/ACTG/ACTG_v1.11/peptides_pseudo_breast</Output>
+    </Environment>
+    <ProteinDB>
+      <!-- If a user sets "MappingMethod" as P[V|S], then the user should provide a folder path containing protein database. -->
+      <Input format="FASTA" type="proteinDB">/home/hari/Desktop/ACTG/ACTG_v1.11/uniprot_nextprot_human.fasta</Input>
+      <!-- Yes/No: automatically consider single amino-acid variant when mapping on protein database. -->
+      <SAVs>Yes</SAVs>
+    </ProteinDB>
+    <VariantSpliceGraph>
+      <!-- Serialization file path of the variant splice graph. -->
+      <Input format="ser" type="graphFile">abcd</Input>
+      <!-- Yes/No: consider junction variation events. -->
+      <JunctionVariation>yes</JunctionVariation>
+      <!-- Yes/No: consider single exon skipping events. -->
+      <ExonSkipping>yes</ExonSkipping>
+      <!-- Yes/No: consider intron mapping (exon-extension) events. -->
+      <IntronMapping>yes</IntronMapping>
+      <!-- If a user gives a VCF (variant call format), then this setting must be "yes". -->
+      <Mutation>No</Mutation>
+      <!-- If "Mutation" tag is set as "yes", then a user should provide the path of folder where VCF files are. -->
+      <Input format="VCF" type="mutation">VCF</Input>
+    </VariantSpliceGraph>
+    <SixFrameTranslation>
+      <!-- If a user sets "MappingMethod" as PS or SO, then the user should provide the path of folder where reference genome files are. -->
+      <Input format="FASTA" type="referenceGenome">hg19.fa</Input>
+    </SixFrameTranslation>
+  </Mapping>
+  <Systems>
+    <!-- A user can set the number of threads. A proper setting can increase the speed of mapping. -->
+    <TheNumberOfThreads>3</TheNumberOfThreads>
+  </Systems>
 </Params>

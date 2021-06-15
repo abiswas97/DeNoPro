@@ -53,21 +53,21 @@ for (k in 1:length(conf_peptide_psm)) {
 peptide_for_actg<-list.files(pattern="^novel_peptides_for_ACTG",recursive=TRUE)
 
 # Edit and prepare ACTG's mapping_params.xml
-data <- xmlParse(actg_dir,"/mapping_params.xml")
+mapping <- xmlParse(actg_dir,"/mapping_params.xml")
 
-invisible(replaceNodes(data[["//Environment/MappingMethod/text()"]], newXMLTextNode(mapping_method)))
-invisible(replaceNodes(data[["//Environment/Output/text()"]], newXMLTextNode(output_dir)))
-invisible(replaceNodes(data[["//ProteinDB/Input/text()"]], newXMLTextNode(proteindb)))
-invisible(replaceNodes(data[["//VariantSpliceGraph/Input[@type='graphFile']/text()"]], newXMLTextNode(ser_file)))
-invisible(replaceNodes(data[["//SixFrameTranslation/Input/text()"]], newXMLTextNode(ref_genome)))
-
+invisible(replaceNodes(mapping[["//Environment/MappingMethod/text()"]], newXMLTextNode(mapping_method)))
+invisible(replaceNodes(mapping[["//Environment/Output/text()"]], newXMLTextNode(output_dir)))
+invisible(replaceNodes(mapping[["//ProteinDB/Input/text()"]], newXMLTextNode(proteindb)))
+invisible(replaceNodes(mapping[["//VariantSpliceGraph/Input[@type='graphFile']/text()"]], newXMLTextNode(ser_file)))
+invisible(replaceNodes(mapping[["//SixFrameTranslation/Input/text()"]], newXMLTextNode(ref_genome)))
+saveXML(mapping, file = file.path(actg_dir,'mapping_params.xml'))
 
 for (k in 1:length(peptide_for_actg)) {
 #	data <- xmlParse(actg_dir,"/mapping_params.xml")
-	invisible(replaceNodes(data[["//Input/text()"]], newXMLTextNode(peptide_for_actg[k])))
+	invisible(replaceNodes(mapping[["//Input/text()"]], newXMLTextNode(peptide_for_actg[k])))
 	list <- strsplit(as.character(peptide_for_actg[k]), split="/")
 	df1 <- ldply(list)
-	saveXML(data,file=paste(df1$V1,'xml',sep='.'))
+	saveXML(mapping,file=paste(df1$V1,'xml',sep='.'))
 	}
 
 

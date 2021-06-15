@@ -5,6 +5,7 @@ import argparse
 import sys
 import os
 import pathlib 
+import xml.etree.ElementTree as ET
 
 class configReader():
     base_parser = argparse.ArgumentParser(add_help=False,
@@ -123,11 +124,15 @@ class novelPeptide(configReader):
                 description="identify confident novel peptides",
                 parents=[self.base_parser],
                 formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-            
+            parser.add_argument('--splice_graph','-s', help='Construct a variant splice graph')
+
             args = parser.parse_args(sys.argv[2:])
 
+            self.splice_graph = args.splice_graph
             config_file = args.config_file
+
         else:
+            self.splice_graph = kwargs.get('splice_graph')
             config_file = kwargs.get('config_file')
         
         self.config = self.read_config(config_file)
@@ -138,6 +143,9 @@ class novelPeptide(configReader):
             self.actg = self.config.get('dependency_locations', 'actg')
         else:
             print("Please specify the directory containing ACTG.")
+
+        if self.config.has_option('actg_options', 'transcriptome_gtf'):
+            self.transcriptome_gtf = self.config.get('actg_options', 'transcriptome_gtf')
 
         if self.config.has_option('actg_options', 'mapping_method'):
             self.mapping_method = self.config.get('actg_options','mapping_method')
@@ -160,9 +168,24 @@ class novelPeptide(configReader):
             print("Please specify a path to a reference genome.")
 
     def run(self):
-        os.system(f"Rscript {self.denopropath}/denoprolib/novel_peptide_identification_edit.R \
-            {self.output} {self.actg} {self.mapping_method} {self.proteindb} {self.ser_file} \
-                {self.ref_genome}")
+        if self.splice_graph:
+            tree = ET.parse(f"{self.actg}/const_params.xml")
+            root = tree.getroot()
+            
+            root.find(".//Construction/Inputs/Input[@format='GTF']").text = self.transcriptome_gtf
+            root.find(".//Construction/Inputs/Input[@format='FASTA']").text = self.ref_genome
+            root.find(".//Construction/Outputs/Output").text = f"{self.output}/graph.ser"
+
+            tree.write(f"{self.actg}/const_params.xml")
+            os.system(f"java -Xmx8G -Xss2m -jar {self.actg}/ACTG_construction.jar const_params.xml")
+
+            os.system(f"Rscript {self.denopropath}/denoprolib/novel_peptide_identification_edit.R \
+                {self.output} {self.actg} {self.mapping_method} {self.proteindb} {self.output}/graph.ser \
+                    {self.ref_genome}")            
+        else: 
+            os.system(f"Rscript {self.denopropath}/denoprolib/novel_peptide_identification_edit.R \
+                {self.output} {self.actg} {self.mapping_method} {self.proteindb} {self.ser_file} \
+                    {self.ref_genome}")
 
 class survivalAnalysis(configReader):
     def __init__(self, **kwargs):
