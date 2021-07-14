@@ -5,7 +5,10 @@ DeNoPro - a denovo proteogeomics pipeline to identify clinically relevent novel 
 ## Contents ##
 1. [Introduction](#introduction)
 2. [Installation](#installation)
-3. [Usage](#usage)
+3. [Dependencies](#dependencies)
+4. [Usage](#usage)
+5. [GUI](#gui)
+
 
 ## Introduction
 DeNoPro provides a pipeline for the identification of novel peptides from matched RNAseq and MS/MS proteomics data. 
@@ -19,6 +22,7 @@ To install DeNoPro as a python module, open a terminal in the directory containi
 python setup.py install
 ```
 DeNoPro can be made executable by running `chmod u+x denopro`.
+
 
 ## Dependencies
 
@@ -38,6 +42,7 @@ We recommend using a conda environment to maintain dependencies, and an environm
 - [PeptideShaker](https://compomics.github.io/projects/peptide-shaker) version [1.16.42](https://mvnrepository.com/artifact/eu.isas.peptideshaker/PeptideShaker/1.16.42)    - Used to select matching identifications among the three search engines to output a list of confident novel peptides and their corresponding proteins
 - [ACTG](https://academic.oup.com/bioinformatics/article/33/8/1218/2748210)     - Used to map identified confident novel peptides to their corresponding genomic locations
 - [Bamstats](https://github.com/guigolab/bamstats) - Used to process expression levels of novel peptides 
+
 
 ## Usage
 
@@ -101,3 +106,9 @@ denopro findnovel [options] <dir>
 
 
 ### NovelORF
+
+
+## GUI
+![Main screen](./images/for_readme/denopro_main.png) 
+![User selection](./images/for_readme/denopro_selection.png)
+![Change config](./images/for_readme/denopro_config.png)
