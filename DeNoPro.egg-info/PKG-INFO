@@ -1,8 +1,8 @@
 Metadata-Version: 1.0
 Name: DeNoPro
-Version: 0.5
+Version: 0.6
 Summary: Denovo Proteogenomics Pipeline to identify clinically relevant novel variants from RNAseq and Proteomics data.
-Home-page: https://github.com/MSCTR/Denovo-Proteogenomics-Pipeline
+Home-page: https://github.com/abiswas97/DeNoPro
 Author: MSCTR
 Author-email: UNKNOWN
 License: UNKNOWN

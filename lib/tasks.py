@@ -179,13 +179,53 @@ class novelPeptide(configReader):
             tree.write(f"{self.actg}/const_params.xml")
             os.system(f"java -Xmx8G -Xss2m -jar {self.actg}/ACTG_construction.jar const_params.xml")
 
-            os.system(f"Rscript {self.denopropath}/denoprolib/novel_peptide_identification_edit.R \
+            os.system(f"Rscript {self.denopropath}/denoprolib/novel_peptide_identification.R \
                 {self.output} {self.actg} {self.mapping_method} {self.proteindb} {self.output}/graph.ser \
-                    {self.ref_genome}")            
+                    {self.ref_genome}")  
+            os.system(f"Rscript {self.denopropath}/denoprolib/actg_summary.R {self.output}")          
         else: 
-            os.system(f"Rscript {self.denopropath}/denoprolib/novel_peptide_identification_edit.R \
+            os.system(f"Rscript {self.denopropath}/denoprolib/novel_peptide_identification.R \
                 {self.output} {self.actg} {self.mapping_method} {self.proteindb} {self.ser_file} \
                     {self.ref_genome}")
+            os.system(f"Rscript {self.denopropath}/denoprolib/actg_summary.R {self.output}")
+
+class tcgaQuant(configReader):
+    def __init__(self, **kwargs):
+        if not kwargs:
+            parser = argparse.ArgumentParser(
+                description="Expression Level Quantification",
+                parents=[self.base_parser],
+                formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+            
+            args = parser.parse_args(sys.argv[2:])
+
+            config_file = args.config_file
+        else:
+            config_file = kwargs.get('config_file')
+        
+        self.config = self.read_config(config_file)
+        self.output = self.output_dir()
+        self.denopropath = self.config.get('denopro_location', 'denopro_path')
+
+        if self.config.has_option('quantification_options', 'bamstats'):
+            self.bamstats = self.config.get('quantification_options','bamstats')
+        else:
+            print("Please specify a path to bamstats.")
+
+        if self.config.has_option('quantification_options', 'bam_files'):
+            self.bam_files = self.config.get('quantification_options','bam_files')
+        else:
+            print("Please specify a path to the BAM files to use.")
+
+        if self.config.has_option('quantification_options', 'bed_file'):
+            self.bed_file = self.config.get('quantification_options','bed_file')
+        else:
+            print("Please specify a path to the BED file to use.")
+
+    def run(self):
+        os.system(f"Rscript {self.denopropath}/denoprolib/bed_for_quant.R {self.output}")
+        os.system(f"Rscript {self.denopropath}/denoprolib/TCGA_quantification.R {self.bamstats} \
+            {self.bam_files} {self.bed_file} {self.output}")
 
 class survivalAnalysis(configReader):
     def __init__(self, **kwargs):

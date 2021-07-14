@@ -16,7 +16,7 @@ system(paste("grep -vwE '(#chrom)' mergedfile.txt > merged_file_HEADER_REMOVED.t
 r1<-read.delim("merged_file_HEADER_REMOVED.txt",header=FALSE)
 r2<-r1[,c(5,8)] #extract average expression of each peptide
 r2[r2==0]<-NA #converting 0 to NA
-write.table(r2,"GPR56_mergedfile_header_removed_NA_added.txt",sep="\t",col.names=F)
+write.table(r2,"GPR56_PROTEOGENOMICS_mergedfile_header_removed_NA_added.txt",sep="\t",col.names=F)
 system(paste("awk '1 {if (a[$2]) {a[$2] = a[$2]\" \"$3} else {a[$2] = $3}} END {for (i in a) { print i,a[i]}}' GPR56_PROTEOGENOMICS_mergedfile_header_removed_NA_added.txt >GPR56_PROTEOGENOMICS_ALL_TRANSPOSED.txt"))
 r1<-read.delim("GPR56_PROTEOGENOMICS_ALL_TRANSPOSED.txt",header=FALSE,sep=" ")
 rownames(r1)<-r1[,1]

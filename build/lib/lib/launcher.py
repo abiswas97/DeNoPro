@@ -3,7 +3,7 @@ import sys
 import time
 import os
 
-from lib.tasks import assemble, searchguiPeptideshaker, novelPeptide, survivalAnalysis, potentialNovelORF
+from lib.tasks import assemble, searchguiPeptideshaker, novelPeptide, tcgaQuant, survivalAnalysis, potentialNovelORF
 from lib import denoprogui
 
 class launchGUI(argparse.Action):
@@ -31,16 +31,19 @@ def launch():
              # # # # # # # # # # # # # # # # # # # # # # # # # # 
         
                         denopro <mode> [<args>]
+                                  OR
+                            denopro -g/--gui
 
         Modes are:
 
-            - assemble:  denovo assembly of transcript sequences using Trinity
-            - customdb:  produces custom peptide database from assembled transcripts 
+            - assemble: de novo assembly of transcript sequences using Trinity
+            - searchdb: produces custom peptide database from assembled transcripts 
                          which are mapped against proteomics data
-            - findnovel: maps potential novel peptides from customdb to a reference 
+            - identify: maps potential novel peptides from searchdb to a reference 
                          tracriptome, outputting a list of confident novel peptides
-            - survival: 
-            - novelorf: 
+            - novelorf: finds novel ORFs in identified novel peptides
+            - quantify: evaluates expression levels of identified novel peptides in a sample
+            
 
         denopro <mode> -h for specific help
         """)
@@ -51,9 +54,10 @@ def launch():
 
     modes = {
         'assemble': assemble,
-        'customdb': searchguiPeptideshaker,
-        'findnovel': novelPeptide,
-        'survival': survivalAnalysis,
+        'searchdb': searchguiPeptideshaker,
+        'identify': novelPeptide,
+        'quantify': tcgaQuant,
+        #'survival': survivalAnalysis,
         'novelorf': potentialNovelORF
     }
 
