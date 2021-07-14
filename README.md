@@ -60,7 +60,8 @@ DeNoPro was designed to be modular, to account for large processing times. The m
 
 The standard workflow is 
     `assemble` >> `searchdb` >> `identify` >> `novelorf` >> `quantify`
-
+  
+----  
 ### Assemble 
 denovo assembly of transcript sequences using Trinity
 
@@ -78,7 +79,7 @@ denopro assemble [options]
 * `dependency_locations/trinity`: Full path to Trinity installation
 * `directory_locations/fastq_for_trinity`: Directory containing FASTQ files
 
-
+----
 ### SearchDB 
 Produces custom peptide database from assembled transcripts which are mapped against proteomics data
 
@@ -96,7 +97,7 @@ denopro searchdb [options]
 * `directory_locations/spectra_files`: Directory containing `.mgf` files for database searching
 * `dependency_locations/hg19`: Full path to reference transciptome (FASTA) of protein coding genes 
 
-
+----
 ### Identify 
 Maps potential novel peptides from customdb to a reference tracriptome, outputting a list of confident novel peptides
 
@@ -117,7 +118,7 @@ denopro identify [options]
 * `protein_database`: *If* `mapping_method` is PV or PS, path to directory containing protein database 
 * `serialization_file`: Path to serialization file of a variant splice graph
 
-
+----
 ### NovelORF
 Finds novel ORFs in identified novel peptides
 
@@ -130,7 +131,7 @@ denopro novelorf [options]
 #### Configuration options
 * `output_dir`: Directory to use as pipeline output 
 
-
+----
 ### Quantify
 Evaluates expression levels of identified novel peptides
 
