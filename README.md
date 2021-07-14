@@ -29,34 +29,15 @@ We recommend using a conda environment to maintain dependencies, and an environm
 ### Required software
 
 #### Included in conda environment
-- [Trinity](https://github.com/trinityrnaseq/trinityrnaseq/wiki) version 2.8.5
-    
-    Used during `assemble` for de novo assembly of RNA transcripts 
-
-- [PGA](https://github.com/wenbostar/PGA) (R>4.0)
-    
-    Used in `customdb` for creation of 6-frame translated protein database 
-
-- [PySimpleGUI](https://github.com/PySimpleGUI/PySimpleGUI)
-    
-    Used to run the GUI functionality
+- [Trinity](https://github.com/trinityrnaseq/trinityrnaseq/wiki) version 2.8.5 - Used during `assemble` for de novo assembly of RNA transcripts 
+- [PGA](https://github.com/wenbostar/PGA) (R>4.0) - Used in `customdb` for creation of 6-frame translated protein database 
+- [PySimpleGUI](https://github.com/PySimpleGUI/PySimpleGUI) - Used to run the GUI functionality
 
 #### Not included in conda environment
-1. [SearchGUI](https://compomics.github.io/projects/searchgui) version [3.3.17](https://mvnrepository.com/artifact/eu.isas.searchgui/SearchGUI/3.3.17)
-    
-    Uses the `X! Tandem`, `MS_GF+` and `Tide` search engines to search created custom database against mgf spectra files
-
-2. [PeptideShaker](https://compomics.github.io/projects/peptide-shaker) version [1.16.42](https://mvnrepository.com/artifact/eu.isas.peptideshaker/PeptideShaker/1.16.42)
-    
-    Used to select matching identifications among the three search engines to output a list of confident novel peptides and their corresponding proteins
-
-3. [ACTG](https://academic.oup.com/bioinformatics/article/33/8/1218/2748210)
-    
-    Used to map identified confident novel peptides to their corresponding genomic locations
-
-4. [Bamstats](https://github.com/guigolab/bamstats)
-    
-    Used to process expression levels of novel peptides 
+- [SearchGUI](https://compomics.github.io/projects/searchgui) version [3.3.17](https://mvnrepository.com/artifact/eu.isas.searchgui/SearchGUI/3.3.17) - Uses the `X! Tandem`, `MS_GF+` and `Tide` search engines to search created custom database against mgf spectra files
+- [PeptideShaker](https://compomics.github.io/projects/peptide-shaker) version [1.16.42](https://mvnrepository.com/artifact/eu.isas.peptideshaker/PeptideShaker/1.16.42)    - Used to select matching identifications among the three search engines to output a list of confident novel peptides and their corresponding proteins
+- [ACTG](https://academic.oup.com/bioinformatics/article/33/8/1218/2748210)     - Used to map identified confident novel peptides to their corresponding genomic locations
+- [Bamstats](https://github.com/guigolab/bamstats) - Used to process expression levels of novel peptides 
 
 ## Usage
 
