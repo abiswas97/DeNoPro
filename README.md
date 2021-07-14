@@ -64,7 +64,6 @@ The standard workflow is
 ### Assemble 
 denovo assembly of transcript sequences using Trinity
 
-#### Usage
 ```
 denopro assemble [options]
 ```
@@ -72,10 +71,9 @@ denopro assemble [options]
 #### Options
 * `-c/--config_file`: Point to the path of config file to use. Default is `/denopro.conf`
 
-### CustomDB 
+### SearchDB 
 Produces custom peptide database from assembled transcripts which are mapped against proteomics spectra
 
-#### Usage
 ```
 denopro customdb [options] <spectra>
 ```
@@ -87,10 +85,9 @@ denopro customdb [options] <spectra>
 * `-c/--config_file`: Point to the path of config file to use. Default is `/denopro.conf`
 
 
-### FindNovel 
+### Identify 
 Maps potential novel peptides from customdb to a reference tracriptome, outputting a list of confident novel peptides
 
-#### Usage
 ```
 denopro findnovel [options] <dir>
 ```
@@ -102,10 +99,10 @@ denopro findnovel [options] <dir>
 * `-c/--config_file`: Point to the path of config file to use. Default is `/denopro.conf`
 
 
-### Survival
-
-
 ### NovelORF
+
+
+### Quantify
 
 
 ## GUI
