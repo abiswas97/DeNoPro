@@ -20,15 +20,15 @@ python setup.py install
 ```
 DeNoPro can be made executable by running `chmod u+x denopro`.
 
-### Dependencies
+## Dependencies
 
 DeNoPro has been tested with Python 3, Python 2 is not supported at this time. R version 4.0.0 or greater is required to run the PGA package. 
 
 We recommend using a conda environment to maintain dependencies, and an environment config file using Python 3.9.6 and R 4.0.5 has been provided. To setup the conda environment, run `conda env create -f denopro-env.yml` and activate with `conda activate denopro-env`.
 
-#### Required software
+### Required software
 
-##### Included in conda environment
+#### Included in conda environment
 1. [Trinity](https://github.com/trinityrnaseq/trinityrnaseq/wiki) version 2.8.5
     
     Used during `assemble` for de novo assembly of RNA transcripts 
@@ -41,14 +41,21 @@ We recommend using a conda environment to maintain dependencies, and an environm
     
     Used to run the GUI functionality
 
-##### Not included in conda environment
+#### Not included in conda environment
 1. [SearchGUI](https://compomics.github.io/projects/searchgui) version [3.3.17](https://mvnrepository.com/artifact/eu.isas.searchgui/SearchGUI/3.3.17)
+    
     Uses the `X! Tandem`, `MS_GF+` and `Tide` search engines to search created custom database against mgf spectra files
+
 2. [PeptideShaker](https://compomics.github.io/projects/peptide-shaker) version [1.16.42](https://mvnrepository.com/artifact/eu.isas.peptideshaker/PeptideShaker/1.16.42)
+    
     Used to select matching identifications among the three search engines to output a list of confident novel peptides and their corresponding proteins
+
 3. [ACTG](https://academic.oup.com/bioinformatics/article/33/8/1218/2748210)
+    
     Used to map identified confident novel peptides to their corresponding genomic locations
+
 4. [Bamstats](https://github.com/guigolab/bamstats)
+    
     Used to process expression levels of novel peptides 
 
 ## Usage
