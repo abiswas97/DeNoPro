@@ -149,6 +149,7 @@ denopro quantify [options]
 * `quantification_options/bed_file`: Full path to BED file to be used. Will be created with data from previous steps if left blank
 
 
+
 ## GUI
 
 DeNoPro offers a graphical interface to run the pipeline and edit configuration files. 
