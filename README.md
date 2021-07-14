@@ -29,15 +29,15 @@ We recommend using a conda environment to maintain dependencies, and an environm
 ### Required software
 
 #### Included in conda environment
-1. [Trinity](https://github.com/trinityrnaseq/trinityrnaseq/wiki) version 2.8.5
+- [Trinity](https://github.com/trinityrnaseq/trinityrnaseq/wiki) version 2.8.5
     
     Used during `assemble` for de novo assembly of RNA transcripts 
 
-2. [PGA](https://github.com/wenbostar/PGA) (R>4.0)
+- [PGA](https://github.com/wenbostar/PGA) (R>4.0)
     
     Used in `customdb` for creation of 6-frame translated protein database 
 
-3. [PySimpleGUI](https://github.com/PySimpleGUI/PySimpleGUI)
+- [PySimpleGUI](https://github.com/PySimpleGUI/PySimpleGUI)
     
     Used to run the GUI functionality
 
