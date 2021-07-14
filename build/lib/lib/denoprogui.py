@@ -162,7 +162,7 @@ def main():
         #output
         [sg.Text('Final Command:')], 
         
-        [sg.Text(size=(40,3),key='command_line', text_color='red',font='Courier 12')],
+        [sg.Text(size=(90,3),key='command_line', text_color='red',font='Courier 8')],
         
         [sg.Output(size=(90,16), font='Courier 10', key='-ML-')],
         

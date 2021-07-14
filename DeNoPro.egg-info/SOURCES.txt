@@ -10,6 +10,5 @@ denoprolib/trinity.py
 lib/__init__.py
 lib/__main__.py
 lib/denoprogui.py
-lib/guitest.py
 lib/launcher.py
 lib/tasks.py
