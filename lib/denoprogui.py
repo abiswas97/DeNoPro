@@ -15,6 +15,7 @@ conf_keys = {
     'searchgui': ['dependency_locations','','-SEARCHGUI-'],
     'peptideshaker': ['dependency_locations','','-PEPTIDE-'],
     'actg': ['dependency_locations','','-ACTG-'],
+    'ref_genome': ['actg_options','','-REF-'],
     'transcriptome_gtf': ['actg_options','','-GTF-'],
     'mapping_method': ['actg_options','','-MAP-'],
     'protein_database': ['actg_options','','-DB-'],
@@ -29,7 +30,7 @@ conf_keys = {
 default_conf = {
     'directory_locations': ['output_dir', 'fastq_for_trinity', 'spectra_files'],
     'dependency_locations': ['trinity', 'hg19', 'searchgui', 'peptideshaker', 'actg'],
-    'actg_options': ['transcriptome_gtf', 'mapping_method', 'protein_database', 'serialization_file'],
+    'actg_options': ['ref_genome','transcriptome_gtf', 'mapping_method', 'protein_database', 'serialization_file'],
     'quantification_options': ['bamstats', 'bam_files', 'bed_file'],
     'denopro_location': ['denopro_path'],
     'gui_settings': ['theme']
@@ -106,6 +107,7 @@ def create_conf_window(parser):
         [TextLabel('ACTG'), sg.Input(key='-ACTG-'), sg.FolderBrowse(target='-ACTG-')],
         [sg.Text('')],
         [TextLabel('Transcriptome GTF'), sg.Input(key='-GTF-'), sg.FolderBrowse(target='-GTF-')],
+        [TextLabel('Reference genome'), sg.Input(key='-REF-'), sg.FolderBrowse(target='-REF-')],
         [TextLabel('Mapping Method'), sg.Combo(['PV','PS','VO','SO'],key='-MAP-')],
         [TextLabel('Protein Database'), sg.Input(key='-DB-'), sg.FileBrowse(target='-DB-')],
         [TextLabel('Serialization File'), sg.Input(key='-SER-'), sg.FileBrowse(target='-SER-')],

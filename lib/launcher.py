@@ -48,7 +48,7 @@ def launch():
         denopro <mode> -h for specific help
         """)
     parser.add_argument('mode', metavar = "<MODE>", help = 'denopro mode (assemble, customdb, findnovel, survival or novelorf)',
-                        choices = ['assemble', 'customdb', 'findnovel', 'survival', 'novelorf'])
+                        choices = ['assemble', 'searchdb', 'identify', 'novelorf', 'quantify'])
     parser.add_argument('-g','--gui', help = 'Launches the GUI functionality',nargs = 0, action=launchGUI)
     args = parser.parse_args(sys.argv[1:2])
 

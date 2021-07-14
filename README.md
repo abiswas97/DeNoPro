@@ -35,7 +35,7 @@ We recommend using a conda environment to maintain dependencies, and an environm
 #### Included in conda environment
 - [Trinity](https://github.com/trinityrnaseq/trinityrnaseq/wiki) version 2.8.5 - Used during `assemble` for de novo assembly of RNA transcripts 
 - [PGA](https://github.com/wenbostar/PGA) (R>4.0) - Used in `customdb` for creation of 6-frame translated protein database 
-- [PySimpleGUI](https://github.com/PySimpleGUI/PySimpleGUI) - Used to run the GUI functionality
+- [PySimpleGUIQt](https://github.com/PySimpleGUI/PySimpleGUI/tree/master/PySimpleGUIQt) - Used to run the GUI functionality
 
 #### Not included in conda environment
 - [SearchGUI](https://compomics.github.io/projects/searchgui) version [3.3.17](https://mvnrepository.com/artifact/eu.isas.searchgui/SearchGUI/3.3.17) - Uses the `X! Tandem`, `MS_GF+` and `Tide` search engines to search created custom database against mgf spectra files
@@ -68,44 +68,95 @@ denovo assembly of transcript sequences using Trinity
 denopro assemble [options]
 ```
 
-#### Options
-* `-c/--config_file`: Point to the path of config file to use. Default is `/denopro.conf`
+#### CLI options
+* `-c/--config_file`: Point to the path of config file to use. Default is `./denopro.conf`
+* `--cpu`: Maximum number of threads to be used by Trinity
+* `--max_mem`: Maximum number of RAM (in GB) that can be allocated
+
+#### Configuration options
+* `output_dir`: Directory to use as pipeline output
+* `dependency_locations/trinity`: Full path to Trinity installation
+* `directory_locations/fastq_for_trinity`: Directory containing FASTQ files
+
 
 ### SearchDB 
-Produces custom peptide database from assembled transcripts which are mapped against proteomics spectra
+Produces custom peptide database from assembled transcripts which are mapped against proteomics data
 
 ```
-denopro customdb [options] <spectra>
+denopro searchdb [options] 
 ```
 
-#### Arguments
-* `<spectra>`: Path to directory containing MS/MS spectra files
+#### CLI options
+* `-c/--config_file`: Point to the path of config file to use. Default is `./denopro.conf`
 
-#### Options
-* `-c/--config_file`: Point to the path of config file to use. Default is `/denopro.conf`
+#### Configuration options
+* `output_dir`: Directory to use as pipeline output
+* `dependency_locations/searchgui`: Full path to SearchGUI `.jar` file
+* `dependency_locations/peptideshaker`: Full path to PeptideShaker `.jar` file
+* `directory_locations/spectra_files`: Directory containing `.mgf` files for database searching
+* `dependency_locations/hg19`: Full path to reference transciptome (FASTA) of protein coding genes 
 
 
 ### Identify 
 Maps potential novel peptides from customdb to a reference tracriptome, outputting a list of confident novel peptides
 
 ```
-denopro findnovel [options] <dir>
+denopro identify [options] 
 ```
 
-#### Arguments
-* `<dir>`: Path to directory containing CustomDB output
+#### CLI options
+* `-c/--config_file`: Point to the path of config file to use. Default is `./denopro.conf`
 
-#### Options
-* `-c/--config_file`: Point to the path of config file to use. Default is `/denopro.conf`
+#### Configuration options
+* `output_dir`: Directory to use as pipeline output
+* `dependency_locations/actg`: Full path to directory containing `ACTG.jar` and `param.xml` files
+> **Note**: Transcriptome model and reference genome are only needed if a serialization file needs to be constructed. If a serialization file is needed, leave `serialization_file` blank.
+* `actg_options/transcriptome_gtf`: Path to transcriptome model to be used for mapping
+* `actg_options/ref_genome`: Path to directory containing reference genome (**each file name must be the same as chromosome number written in the GTF files**)
+* `actg_options/mapping_method`: Mapping method to be used. Options are `PV` (Mapping [P]rotein database first, then [V]ariant splice graph), `PS` (Mapping [P]rotein database first, then [S]ix-frame translation), `VO` (Mapping [V]ariant splice graph [O]nly), `SO` (Mapping [S]ix-frame translation [O]nly)
+* `protein_database`: *If* `mapping_method` is PV or PS, path to directory containing protein database 
+* `serialization_file`: Path to serialization file of a variant splice graph
 
 
 ### NovelORF
+Finds novel ORFs in identified novel peptides
+
+```
+denopro novelorf [options]
+```
+#### CLI options
+* `-c/--config_file`: Point to the path of config file to use. Default is `./denopro.conf`
+
+#### Configuration options
+* `output_dir`: Directory to use as pipeline output 
 
 
 ### Quantify
+Evaluates expression levels of identified novel peptides
+
+```
+denopro quantify [options]
+```
+
+#### CLI options
+* `-c/--config_file`: Point to the path of config file to use. Default is `./denopro.conf`
+
+#### Configuration options
+* `output_dir`: Directory to use as pipeline output
+* `quantification_options/bamstats`: Full path to bamstats `.jar` file
+* `quantification_options/bam_files`: Full path to directory containing BAM files to be analysed
+* `quantification_options/bed_file`: Full path to BED file to be used. Will be created with data from previous steps if left blank
 
 
 ## GUI
+
+DeNoPro offers a graphical interface to run the pipeline and edit configuration files. 
 ![Main screen](./images/for_readme/denopro_main.png) 
+
+
 ![User selection](./images/for_readme/denopro_selection.png)
+
+
 ![Change config](./images/for_readme/denopro_config.png)
+
+The GUI uses the Qt framework through [PySimpleGUIQt](https://github.com/PySimpleGUI/PySimpleGUI/tree/master/PySimpleGUIQt) which can be installed with `conda install PySimpleGUIQt'. 

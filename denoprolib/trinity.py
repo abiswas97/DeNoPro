@@ -18,7 +18,7 @@ def runTrinity(trinity_path, fastq, cpu, max_mem, output_dir):
                     print(file2)
                     os.system(f"{trinity_path} --seqType fq --normalize_by_read_set"
                     + f" --left {file1} --right {file2} --trimmomatic --full_cleanup"
-                    + f" --CPU {cpu} --max_memory {max_mem} --bflyCPU 10 --bflyHeapSpaceMax 4G"
+                    + f" --CPU {cpu} --max_memory {max_mem}G --bflyCPU 10 --bflyHeapSpaceMax 4G"
                     + f" --output {output_dir}/Trinity.{id[0]} --monitoring --verbose")
 
     
