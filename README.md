@@ -1,6 +1,6 @@
 # DeNoPro
 
-DeNoPro - a denovo proteogeomics pipeline to identify clinically relevent novel variants from RNAseq and Proteomics data.
+DeNoPro - a de novo proteogeomics pipeline to identify clinically relevent novel variants from RNAseq and Proteomics data.
 
 ## Contents ##
 1. [Introduction](#introduction)
