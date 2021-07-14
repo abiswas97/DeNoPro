@@ -1,5 +1,5 @@
 import configparser
-import PySimpleGUI as sg
+import PySimpleGUIQt as sg
 import subprocess
 import sys
 from os import path
@@ -14,13 +14,23 @@ conf_keys = {
     'hg19': ['dependency_locations','','-HG19-'],
     'searchgui': ['dependency_locations','','-SEARCHGUI-'],
     'peptideshaker': ['dependency_locations','','-PEPTIDE-'],
+    'actg': ['dependency_locations','','-ACTG-'],
+    'transcriptome_gtf': ['actg_options','','-GTF-'],
+    'mapping_method': ['actg_options','','-MAP-'],
+    'protein_database': ['actg_options','','-DB-'],
+    'serialization_file': ['actg_options','','-SER-'],
+    'bamstats': ['quantification_options','','-BAMSTATS-'],
+    'bam_files': ['quantification_options','','-BAM-'],
+    'bed_file': ['quantification_options','','-BED-'],
     'denopro_path': ['denopro_location','','-DENOPRO-'],
     'theme': ['gui_settings','','-THEME-']
     }
 
 default_conf = {
     'directory_locations': ['output_dir', 'fastq_for_trinity', 'spectra_files'],
-    'dependency_locations': ['trinity', 'hg19', 'searchgui', 'peptideshaker'],
+    'dependency_locations': ['trinity', 'hg19', 'searchgui', 'peptideshaker', 'actg'],
+    'actg_options': ['transcriptome_gtf', 'mapping_method', 'protein_database', 'serialization_file'],
+    'quantification_options': ['bamstats', 'bam_files', 'bed_file'],
     'denopro_location': ['denopro_path'],
     'gui_settings': ['theme']
     }
@@ -81,26 +91,40 @@ def create_conf_window(parser):
     sg.theme(parser.get('gui_settings','theme'))
 
     def TextLabel(text): return sg.Text(text+':', justification='r', size=(25,1))
-
+    
     layout = [
-        [sg.Text('Choose Configuration', font = 'Helvetica 20', justification='c')],
-        [sg.HSeparator()],
+        [sg.Text('Choose Configuration', font = 'Any 20', justification='c')],
+        [sg.Text('')],
         [TextLabel('Output Directory'), sg.Input(key='-OUTDIR-'), sg.FolderBrowse(target='-OUTDIR-')],
         [TextLabel('FASTQ Files Directory'), sg.Input(key='-FASTQ-'), sg.FolderBrowse(target='-FASTQ-')],
         [TextLabel('Spectra Files Directory'), sg.Input(key='-SPECTRA-'), sg.FolderBrowse(target='-SPECTRA-')],
-        [TextLabel('Hg19 Reference'), sg.Input(key='-HG19-'), sg.FileBrowse(target='-HG19-')],
+        [sg.Text('')],
+        [TextLabel('Trinity'), sg.Input(key='-TRINITY-'), sg.FileBrowse(target='-TRINITY-')],
+        [TextLabel('hg19'), sg.Input(key='-HG19-'), sg.FileBrowse(target='-HG19-')],
         [TextLabel('SearchGUI'), sg.Input(key='-SEARCHGUI-'), sg.FileBrowse(target='-SEARCHGUI-')],
         [TextLabel('PeptideShaker'), sg.Input(key='-PEPTIDE-'), sg.FileBrowse(target='-PEPTIDE-')],
-        [TextLabel('Path to Trinity'), sg.Input(key='-TRINITY-'), sg.FileBrowse(target='-TRINITY-')],
-        [TextLabel('Path to DeNoPro directory'), sg.Input(key='-DENOPRO-'), sg.FolderBrowse(target='-DENOPRO-')],
-        [TextLabel('Theme'), sg.Combo(sg.theme_list(), size=(20, 20), key='-THEME-')],
+        [TextLabel('ACTG'), sg.Input(key='-ACTG-'), sg.FolderBrowse(target='-ACTG-')],
+        [sg.Text('')],
+        [TextLabel('Transcriptome GTF'), sg.Input(key='-GTF-'), sg.FolderBrowse(target='-GTF-')],
+        [TextLabel('Mapping Method'), sg.Combo(['PV','PS','VO','SO'],key='-MAP-')],
+        [TextLabel('Protein Database'), sg.Input(key='-DB-'), sg.FileBrowse(target='-DB-')],
+        [TextLabel('Serialization File'), sg.Input(key='-SER-'), sg.FileBrowse(target='-SER-')],
+        [sg.Text('')],
+        [TextLabel('Bamstats'), sg.Input(key='-BAMSTATS-'), sg.FileBrowse(target='-BAMSTATS-')],
+        [TextLabel('BAM Files'), sg.Input(key='-BAM-'), sg.FolderBrowse(target='-BAM-')],
+        [TextLabel('BED File'), sg.Input(key='-BED-'), sg.FileBrowse(target='-BED-')],
+        [sg.Text('')],
+        [TextLabel('DeNoPro Location'), sg.Input(key='-DENOPRO-'), sg.FolderBrowse(target='-DENOPRO-')],
+        [sg.Text('')],
+        [TextLabel('Theme'), sg.Combo(sg.theme_list(), size=(17, 0.8), key='-THEME-')],
         [sg.Text('')],
         [sg.Text('')],
         [sg.Button('Save'), 
             sg.InputText('', do_not_clear=False, visible=False, key='-filename-',enable_events=True),
             sg.FileSaveAs('Save As'),sg.Button('Exit')]
     ]
-    window = sg.Window("Config", layout, keep_on_top=True, finalize=True)
+
+    window = sg.Window("Config", keep_on_top=True).Layout([[sg.Column(layout,size = (680,720),scrollable=True)]]).Finalize()
 
     for k,v in conf_keys.items():
         try:
@@ -118,35 +142,35 @@ def main():
 
     command_to_run = 'denopro '
     layout = [
-        [sg.Text('        DeNoPro : de novo Proteogenomics Pipeline', font='Helvetica 20', justification='c')],
+        [sg.Text('DeNoPro : de novo Proteogenomics Pipeline', justification='c', font=('Any',22))],
         
         [sg.Text('')],
         
-        [sg.Text('Mode', size=(6,1), justification='r'), 
-            sg.Combo(['assemble','customdb','findnovel','survival','novelorf'],key='mode'),
-            sg.Text('CPU:', size=(6,1), justification='r'), 
-            sg.Input(size=(3,1), key='cpu'), 
-            sg.Text('Max mem:', size=(9,1), justification='r'), 
-            sg.Input(size=(3,1), key='max_mem')],
+        [sg.Text('Mode : ', size=(10,1), justification='r'), 
+            sg.Combo(['assemble','searchdb','identify','novelorf', 'quantify'],key='mode'),
+            sg.Text('CPU:', justification='r'), 
+            sg.Input(key='cpu',font = 'Any 10', size=(5,0.8)), 
+            sg.Text('Max mem:', size=(10,1), justification='r'), 
+            sg.Input(key='max_mem', font = 'Any 10', size=(5,0.8))],
         
-        [sg.Text('Config', size=(6,1), justification='r'), 
+        [sg.Text('Config : ', size=(9,1), justification='r'), 
             sg.Input(key='-config-', enable_events=True),
-            sg.FileBrowse('Select',target='-config-',file_types=(('Config Files','*.conf'),('INI files','*.ini'))), 
-            sg.Button('Change Configuration')],
+            sg.FileBrowse('Select',target='-config-',size = (10,0.8),file_types=(('Config Files','*.conf'),('INI files','*.ini'))), 
+            sg.Button('Change Configuration', size=(22,0.8))],
         
         [sg.Text('')],
         #output
         [sg.Text('Final Command:')], 
         
-        [sg.Text(size=(70,3),key='command_line', text_color='red',font='Courier 8')],
+        [sg.Text(size=(40,3),key='command_line', text_color='red',font='Courier 12')],
         
-        [sg.MLine(size=(90,20), reroute_stdout=True, reroute_stderr=True, reroute_cprint=True, write_only=True, font='Courier 10', autoscroll=True, key='-ML-')],
+        [sg.Output(size=(90,16), font='Courier 10', key='-ML-')],
         
-        [sg.Button('Start', button_color=('white','green'),mouseover_colors=('green','white')), 
+        [sg.Button('Start', button_color=('white','green')), 
             sg.Button('Exit', button_color=('white','#8a2815'))]
     ]   
 
-    main_window = sg.Window('DeNoGUI', layout, finalize=True)
+    main_window = sg.Window('DeNoGUI', layout, font = 'Helvetica 12', finalize=True)
 
     while True: 
         event,values = main_window.read()
