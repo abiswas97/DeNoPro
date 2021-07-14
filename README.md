@@ -51,9 +51,13 @@ We recommend using a conda environment to maintain dependencies, and an environm
 DeNoPro was designed to be modular, to account for large processing times. The modes are
 
 `assemble` : de novo assembly of transcript sequences using Trinity
+
 `searchdb` : produces custom peptide database from assembled transcripts which are mapped against proteomics data
+
 `identify` : maps potential novel peptides from searchdb to a reference tracriptome outputting a list of confident novel peptides
+
 `novelorf` : finds novel ORFs in identified novel peptides
+
 `quantify` : evaluates expression levels of identified novel peptides in a sample
 
 The standard workflow is 
